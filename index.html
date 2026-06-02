@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRONOS | Welterbe & Weltwunder Expedition</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="map"></div>
+<div class="map-texture-overlay"></div>
+
+<!-- HEADER -->
+<header class="app-header">
+    <div class="brand-area">
+        <div class="brand-text">
+            <h1>CHRONOS</h1>
+            <p>Welterbe & Weltwunder Expedition</p>
+        </div>
+    </div>
+    <div class="gamification-hub">
+        <div class="rank-pill"><span class="rank-label">Rang:</span> <span id="rank-badge">Novize</span></div>
+        <div class="xp-section">
+            <div class="xp-labels">
+                <span><span id="xp-points">0</span> XP</span>
+                <span>900 XP Max</span>
+            </div>
+            <div class="xp-bar-outer"><div id="xp-bar-fill" class="xp-bar-inner"></div></div>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<main class="main-container">
+    <section class="story-sidebar">
+
+        <!-- WELCOME PANEL -->
+        <div id="panel-welcome" class="panel-state active">
+            <div class="welcome-header">
+                <div class="accent-tag">Interaktive Expedition</div>
+                <h2>Die Chroniken der Erde</h2>
+                <p class="lead-text">Erkunde herausragende Kulturdenkmäler und die Weltwunder der Menschheit — präzise analysiert und nach Epochen geordnet.</p>
+            </div>
+
+            <!-- Legende -->
+            <div class="legend-box">
+                <div class="legend-title">Kartenlegende</div>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="star-icon">★</span> Weltwunder</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#a32a2a"></div> UNESCO (&gt; 2000 Jahre)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#b8860b"></div> UNESCO (500–2000 Jahre)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#2e6f40"></div> UNESCO (&lt; 500 Jahre)</div>
+                </div>
+            </div>
+
+            <!-- Filter & Sort -->
+            <div class="filter-section">
+                <div class="filter-label">Filter nach Epoche / Typ</div>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all">Alle Stätten</button>
+                    <button class="chip" data-filter="ancient">Antike (&gt;2000 J.)</button>
+                    <button class="chip" data-filter="medieval">Mittelalter</button>
+                    <button class="chip" data-filter="modern">Neuzeit</button>
+                    <button class="chip" data-filter="wonder">★ Weltwunder</button>
+                </div>
+                <div class="sort-row">
+                    <span class="sort-label">Sortierung:</span>
+                    <button class="sort-btn active" data-sort="default">Standard</button>
+                    <button class="sort-btn" data-sort="oldest">Älteste</button>
+                    <button class="sort-btn" data-sort="newest">Neueste</button>
+                    <button class="sort-btn" data-sort="name">A–Z</button>
+                </div>
+            </div>
+
+            <!-- Nav between Explore & Favorites -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-view="explore">Entdecken</button>
+                <button class="nav-tab" data-view="favorites">★ Favoriten (<span id="fav-count">0</span>)</button>
+            </div>
+
+            <!-- Explore view -->
+            <div id="view-explore">
+                <div class="quick-selector-title">Verfügbare Expeditionsziele</div>
+                <div id="quick-list-container"></div>
+            </div>
+
+            <!-- Favorites view -->
+            <div id="view-favorites" style="display:none">
+                <div class="favorites-section">
+                    <div class="quick-selector-title">Meine Lesezeichen</div>
+                    <div id="fav-list-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILS PANEL -->
+        <div id="panel-details" class="panel-state">
+            <button class="back-btn" id="btn-close-details">← Zurück zur Weltkarte</button>
+
+            <div class="site-header-row">
+                <div class="site-badges">
+                    <span id="site-country" class="country-badge">–</span>
+                    <span id="site-category" class="category-badge">–</span>
+                </div>
+                <button class="fav-btn" id="btn-favorite" title="Zu Favoriten hinzufügen">☆</button>
+            </div>
+
+            <div class="site-title" id="site-title">–</div>
+            <div class="year-marker" id="site-year">–</div>
+
+            <div class="gallery-wrapper">
+                <div class="gallery-main"><img id="gallery-img-active" src="" alt=""></div>
+                <div class="gallery-thumbs" id="gallery-thumbs-container"></div>
+            </div>
+
+            <div class="tabs-nav">
+                <button class="tab-trigger active" data-tab="tab-context">Analyse</button>
+                <button class="tab-trigger" data-tab="tab-anecdote">Hintergrund</button>
+                <button class="tab-trigger" data-tab="tab-tour">Navigation</button>
+            </div>
+
+            <div id="tab-context" class="tab-panel active">
+                <div id="site-context-dynamic"></div>
+            </div>
+
+            <div id="tab-anecdote" class="tab-panel">
+                <div class="anecdote-box">
+                    <p class="anecdote-text" id="site-anecdote-text"></p>
+                </div>
+            </div>
+
+            <div id="tab-tour" class="tab-panel">
+                <p class="body-text" style="margin-bottom:14px">Aktivieren Sie die automatisierte Kamera-Führung, um die topografischen Schlüsselpunkte dieser Stätte sequenziell anzusteuern.</p>
+                <div class="tour-box">
+                    <button id="btn-start-tour" class="primary-action-btn">Virtuelle Kamera-Tour starten</button>
+                </div>
+                <div class="timeline-box">
+                    <div class="timeline-title">Chronos Zeit-Skalierung</div>
+                    <div class="tl-row">
+                        <input type="range" class="chrono-slider" id="time-slider" min="0" max="100" value="0">
+                        <span class="tl-label" id="time-label">Gegenwart</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-card" id="quiz-card">
+                <div class="quiz-title">Expeditions-Prüfung</div>
+                <p class="quiz-q" id="quiz-question">Lade Frage…</p>
+                <div class="quiz-options" id="quiz-options"></div>
+                <div class="quiz-hint" id="quiz-hint"></div>
+                <div class="task-success hidden" id="task-success">
+                    <span class="success-icon">✓</span>
+                    <span>Stätte erfolgreich verifiziert! (+150 XP)</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- Map Controls -->
+<div class="map-controls">
+    <button id="btn-toggle-theme" class="ctrl-btn" title="Ansichtsmodus wechseln">🌓</button>
+    <button id="btn-zoom-in" class="ctrl-btn" title="Vergrößern">＋</button>
+    <button id="btn-zoom-out" class="ctrl-btn" title="Verkleinern">−</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>
