@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRONOS – Global Heritage Explorer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+/* ============================================================
+   CHRONOS v3 – MODERN GLASSMORPHISM DESIGN
+   Apple-inspired, minimal, 100% serifenless
+   ============================================================ */
+
+:root {
+    /* Neutral Palette */
+    --white:           #FFFFFF;
+    --off-white:       #F9FAFB;
+    --gray-50:         #F3F4F6;
+    --gray-100:        #E5E7EB;
+    --gray-200:        #D1D5DB;
+    --gray-300:        #9CA3AF;
+    --gray-600:        #4B5563;
+    --gray-900:        #111827;
+    --black:           #000000;
+    
+    /* Accent Colors */
+    --blue:            #0066CC;
+    --blue-light:      #E0EEFF;
+    --blue-dark:       #003399;
+    --red:             #C41E3A;
+    --green:           #34A853;
+    --amber:           #F97316;
+    
+    /* Theme Variables */
+    --bg:              var(--white);
+    --surface:         rgba(255, 255, 255, 0.7);
+    --surface-dark:    rgba(0, 0, 0, 0.05);
+    --border:          rgba(0, 0, 0, 0.08);
+    --text:            var(--gray-900);
+    --text-secondary:  var(--gray-600);
+    --text-tertiary:   var(--gray-300);
+    --shadow:          0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.12);
+    
+    --accent:          var(--blue);
+    --accent-light:    var(--blue-light);
+    
+    /* Glassmorphism */
+    --glass-blur:      backdrop-filter: blur(12px) saturate(180%);
+    --glass-border:    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+body.dark-theme {
+    --bg:              #111111;
+    --surface:         rgba(255, 255, 255, 0.08);
+    --surface-dark:    rgba(0, 0, 0, 0.4);
+    --border:          rgba(255, 255, 255, 0.12);
+    --text:            #FFFFFF;
+    --text-secondary:  #E0E0E0;
+    --text-tertiary:   #A0A0A0;
+    --shadow:          0 4px 16px rgba(0, 0, 0, 0.3);
+    --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.5);
+    --accent-light:    rgba(0, 102, 204, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* MAP */
+#map { position: absolute; inset: 0; z-index: 1; }
+
+/* HEADER */
+.app-header {
+    position: absolute; top: 12px; left: 12px; right: 12px; height: 64px;
+    background: var(--surface);
+    var(--glass-blur);
+    var(--glass-border);
+    border-radius: 14px; z-index: 20;
+    padding: 0 24px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: var(--shadow);
+}
+
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--text);
+}
+.header-subtitle {
+    font-size: 12px; color: var(--text-secondary);
+    font-weight: 500; letter-spacing: 0.3px;
+}
+
+.header-right { display: flex; align-items: center; gap: 16px; }
+.xp-display { text-align: right; }
+.xp-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 3px; }
+.xp-value { font-size: 15px; font-weight: 700; color: var(--accent); }
+.xp-bar { width: 140px; height: 4px; background: var(--surface-dark); border-radius: 2px; overflow: hidden; margin-top: 3px; }
+.xp-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.5s ease; border-radius: 2px; }
+
+/* SIDEBAR */
+.main-container {
+    position: absolute; top: 88px; left: 12px; bottom: 12px;
+    width: 440px; z-index: 10; pointer-events: none;
+}
+
+.story-sidebar {
+    width: 100%; height: 100%;
+    background: var(--surface);
+    var(--glass-blur);
+    var(--glass-border);
+    border-radius: 18px;
+    padding: 32px 28px; overflow-y: auto; pointer-events: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.story-sidebar::-webkit-scrollbar { width: 6px; }
+.story-sidebar::-webkit-scrollbar-track { background: transparent; }
+.story-sidebar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+.panel-state { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+.panel-state.active { display: block; opacity: 1; transform: translateY(0); }
+
+/* WELCOME SECTION */
+.welcome-header { margin-bottom: 24px; }
+.section-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--accent); margin-bottom: 8px;
+}
+
+h2 {
+    font-size: 28px; font-weight: 700; color: var(--text);
+    line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.5px;
+}
+
+.lead-text {
+    font-size: 14px; line-height: 1.6; color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* LEGEND */
+.legend-card {
+    background: var(--surface-dark);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 20px;
+}
+
+.legend-title {
+    font-size: 12px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    border: 2px solid var(--white);
+}
+
+/* FILTERS */
+.filter-group { margin-bottom: 18px; }
+.filter-label {
+    font-size: 12px; font-weight: 600; color: var(--text);
+    margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.filter-chips {
+    display: flex; gap: 6px; flex-wrap: wrap;
+}
+
+.chip {
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border); background: transparent; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s;
+}
+
+.chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+}
+
+.chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+/* SORT */
+.sort-row {
+    display: flex; align-items: center; gap: 8px;
+}
+
+.sort-label {
+    font-size: 12px; color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.sort-btn {
+    padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border); background: transparent; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s;
+}
+
+.sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sort-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* TABS */
+.nav-tabs {
+    display: flex; gap: 8px; margin-bottom: 16px;
+}
+
+.nav-tab {
+    padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--border); background: transparent; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s;
+}
+
+.nav-tab:hover { border-color: var(--accent); color: var(--accent); }
+.nav-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* QUICK LIST */
+.quick-selector-label {
+    font-size: 12px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+#quick-list-container {
+    display: flex; flex-direction: column; gap: 8px;
+}
+
+.quick-item {
+    width: 100%; background: var(--surface-dark); border: 1px solid var(--border);
+    border-radius: 11px; padding: 12px 14px; cursor: pointer; text-align: left;
+    transition: all 0.2s; display: flex; align-items: center; gap: 12px;
+    position: relative;
+}
+
+.quick-item:hover {
+    background: var(--surface);
+    border-color: var(--accent);
+}
+
+.quick-item-body { flex: 1; min-width: 0; }
+.quick-item-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.quick-item-meta {
+    font-size: 12px; color: var(--text-secondary); margin-top: 2px;
+}
+
+.quick-item-fav {
+    font-size: 16px; cursor: pointer; padding: 4px; flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.quick-item-fav:hover { transform: scale(1.2); }
+
+/* FAVORITES */
+.favorites-section { margin-top: 20px; }
+.fav-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#fav-list-container {
+    display: flex; flex-direction: column; gap: 8px;
+}
+
+.fav-item {
+    background: rgba(52, 168, 83, 0.08); border: 1px solid rgba(52, 168, 83, 0.2);
+    border-radius: 10px; padding: 11px 13px; cursor: pointer;
+    display: flex; align-items: center; gap: 10px; transition: all 0.2s;
+}
+
+.fav-item:hover {
+    background: rgba(52, 168, 83, 0.12);
+}
+
+.fav-item-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.fav-item-country { font-size: 11px; color: var(--text-secondary); }
+.fav-remove {
+    font-size: 16px; cursor: pointer; opacity: 0.5;
+    transition: opacity 0.2s; padding: 2px 4px;
+}
+
+.fav-remove:hover { opacity: 1; }
+.empty-fav {
+    font-size: 13px; color: var(--text-secondary);
+    text-align: center; padding: 20px; font-style: italic;
+}
+
+/* DETAILS PANEL */
+.back-btn {
+    background: none; border: none; color: var(--accent);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 6px; margin-bottom: 20px;
+    padding: 0;
+}
+
+.back-btn:hover { opacity: 0.7; }
+
+.site-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.site-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    background: var(--surface-dark); border: 1px solid var(--border);
+    color: var(--text-secondary);
+}
+
+.badge.primary {
+    background: var(--accent); color: white; border-color: var(--accent);
+}
+
+.fav-main-btn {
+    background: none; border: none; font-size: 24px; cursor: pointer;
+    padding: 0; transition: transform 0.2s;
+}
+
+.fav-main-btn:hover { transform: scale(1.15); }
+
+.site-title {
+    font-size: 26px; font-weight: 700; color: var(--text);
+    line-height: 1.2; margin-bottom: 6px; letter-spacing: -0.5px;
+}
+
+.site-meta {
+    font-size: 12px; color: var(--text-secondary); margin-bottom: 18px;
+}
+
+/* GALLERY */
+.gallery-wrapper {
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+    margin-bottom: 20px; background: var(--surface-dark);
+}
+
+.gallery-main {
+    width: 100%; height: 200px; overflow: hidden; position: relative;
+    background: var(--gray-900);
+}
+
+.gallery-main img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease; display: block;
+}
+
+.gallery-thumbs {
+    display: flex; background: var(--surface-dark);
+    padding: 8px; gap: 6px; overflow-x: auto;
+}
+
+.thumb-item {
+    width: 50px; height: 40px; border-radius: 6px; overflow: hidden;
+    cursor: pointer; border: 2px solid transparent; opacity: 0.5;
+    transition: all 0.2s; flex-shrink: 0;
+}
+
+.thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-item.active { border-color: var(--accent); opacity: 1; }
+
+/* CONTENT TABS */
+.tabs-nav {
+    display: flex; background: var(--surface-dark);
+    border: 1px solid var(--border); padding: 4px; border-radius: 10px;
+    margin-bottom: 18px;
+}
+
+.tab-trigger {
+    flex: 1; background: transparent; border: none; color: var(--text-secondary);
+    font-size: 12px; font-weight: 600; padding: 8px;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s;
+}
+
+.tab-trigger.active {
+    background: var(--accent); color: white;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-text {
+    font-size: 13.5px; line-height: 1.7; color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+
+.content-section {
+    margin-bottom: 16px;
+}
+
+.content-heading {
+    font-size: 12px; font-weight: 700; color: var(--text);
+    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--border); padding-bottom: 4px;
+}
+
+.source-attribution {
+    margin-top: 14px; padding: 10px 12px;
+    background: var(--surface-dark); border-radius: 8px;
+    font-size: 11px; color: var(--text-secondary);
+    border-left: 2px solid var(--accent);
+}
+
+.source-attribution a {
+    color: var(--accent); text-decoration: none; font-weight: 600;
+}
+
+.anecdote-box {
+    background: var(--surface-dark);
+    border-left: 3px solid var(--accent);
+    padding: 14px; border-radius: 0 10px 10px 0;
+}
+
+.anecdote-text {
+    font-size: 13.5px; line-height: 1.7; color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* QUIZ */
+.quiz-card {
+    background: var(--surface-dark); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px; margin-top: 20px;
+    position: relative; overflow: hidden;
+}
+
+.quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.quiz-title {
+    font-size: 12px; font-weight: 700; color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.quiz-counter {
+    font-size: 11px; color: var(--text-secondary);
+}
+
+.quiz-question {
+    font-size: 14px; color: var(--text); font-weight: 600;
+    margin-bottom: 12px; line-height: 1.5;
+}
+
+.quiz-options {
+    display: flex; flex-direction: column; gap: 8px;
+}
+
+.quiz-option {
+    padding: 11px 14px; background: transparent; border: 1px solid var(--border);
+    border-radius: 10px; font-size: 13px; color: var(--text-secondary);
+    text-align: left; cursor: pointer; transition: all 0.2s;
+    font-weight: 500;
+}
+
+.quiz-option:hover:not(.disabled) {
+    background: var(--surface); border-color: var(--accent); color: var(--accent);
+}
+
+.quiz-option.correct {
+    background: rgba(52, 168, 83, 0.15) !important;
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+    font-weight: 600;
+}
+
+.quiz-option.wrong {
+    background: rgba(196, 30, 58, 0.1) !important;
+    border-color: var(--red) !important;
+    color: var(--red) !important;
+}
+
+.quiz-hint {
+    margin-top: 10px; padding: 10px 12px;
+    background: rgba(249, 115, 22, 0.1);
+    border-left: 2px solid var(--amber);
+    color: var(--amber); font-size: 12px;
+    border-radius: 0 6px 6px 0; display: none;
+}
+
+.task-success {
+    position: absolute; inset: 0; background: rgba(255, 255, 255, 0.95);
+    color: var(--green); display: flex;
+    align-items: center; justify-content: center; font-weight: 700;
+    font-size: 15px; border-radius: 14px; flex-direction: column; gap: 8px;
+}
+
+body.dark-theme .task-success {
+    background: rgba(20, 20, 20, 0.95);
+}
+
+.task-success.hidden { display: none; }
+
+.success-icon {
+    font-size: 32px;
+}
+
+/* BUTTONS */
+.primary-btn {
+    width: 100%; background: var(--accent); color: white; border: none;
+    padding: 12px 18px; font-size: 14px; font-weight: 600; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+}
+
+.primary-btn:hover {
+    background: var(--blue-dark);
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.3);
+}
+
+.primary-btn:active { transform: translateY(1px); }
+
+.tour-section { margin-top: 16px; }
+
+/* MAP CONTROLS */
+.map-controls {
+    position: absolute; bottom: 20px; right: 20px; z-index: 20;
+    display: flex; flex-direction: column; gap: 8px;
+}
+
+.ctrl-btn {
+    width: 44px; height: 44px;
+    background: var(--surface);
+    var(--glass-blur);
+    var(--glass-border);
+    border-radius: 12px; color: var(--text);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+
+.ctrl-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* MARKERS */
+.custom-marker { background: none; border: none; }
+.marker-wrap { position: relative; width: 22px; height: 22px; }
+.marker-core {
+    width: 14px; height: 14px; border: 2.5px solid white; border-radius: 50%;
+    position: absolute; top: 4px; left: 4px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4); z-index: 2;
+}
+
+.marker-ring {
+    width: 22px; height: 22px; border-radius: 50%;
+    position: absolute; inset: 0; z-index: 1;
+    animation: markerPulse 2.5s infinite ease-out;
+}
+
+.wonder-marker { background: none; border: none; }
+.wonder-wrap { position: relative; width: 28px; height: 28px; }
+.wonder-star {
+    font-size: 22px; position: absolute; top: 3px; left: 3px;
+    filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.8));
+    animation: starTwinkle 3s infinite ease-in-out; z-index: 2;
+}
+
+.wonder-ring {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(249, 115, 22, 0.3);
+    position: absolute; inset: 0;
+    animation: markerPulse 3s infinite ease-out 0.5s; z-index: 1;
+}
+
+@keyframes markerPulse {
+    0% { transform: scale(0.5); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.leaflet-popup { display: none !important; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- HEADER -->
+<header class="app-header">
+    <div class="header-left">
+        <div>
+            <div class="header-logo">CHRONOS</div>
+            <div class="header-subtitle">Global Heritage Explorer</div>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="xp-display">
+            <div class="xp-label">Progress</div>
+            <div class="xp-value" id="xp-points">0</div>
+            <div class="xp-bar"><div id="xp-fill" class="xp-fill"></div></div>
+        </div>
+        <button id="btn-toggle-theme" class="ctrl-btn" style="position: relative; width: auto; height: auto; padding: 8px 12px; border-radius: 8px;">◐</button>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<main class="main-container">
+    <section class="story-sidebar">
+
+        <!-- WELCOME PANEL -->
+        <div id="panel-welcome" class="panel-state active">
+            <div class="welcome-header">
+                <div class="section-label">Explore Heritage</div>
+                <h2>World's Greatest Sites</h2>
+                <p class="lead-text">Discover UNESCO World Heritage sites and the Seven Wonders. Test your knowledge with three questions per location and earn progress points.</p>
+            </div>
+
+            <!-- LEGEND -->
+            <div class="legend-card">
+                <div class="legend-title">Legend</div>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <span style="font-size: 18px;">★</span>
+                        <span>Seven Wonders</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #8B0000;"></div>
+                        <span>Ancient (2000+ y)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #8B6914;"></div>
+                        <span>Medieval</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #2C5F2E;"></div>
+                        <span>Modern</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filter-group">
+                <div class="filter-label">Filter by Era</div>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="ancient">Ancient</button>
+                    <button class="chip" data-filter="medieval">Medieval</button>
+                    <button class="chip" data-filter="modern">Modern</button>
+                    <button class="chip" data-filter="wonder">Wonders</button>
+                </div>
+            </div>
+
+            <!-- SORT -->
+            <div class="filter-group" style="margin-bottom: 16px;">
+                <div class="sort-row">
+                    <span class="sort-label">Sort by</span>
+                    <button class="sort-btn active" data-sort="default">Default</button>
+                    <button class="sort-btn" data-sort="oldest">Oldest</button>
+                    <button class="sort-btn" data-sort="newest">Newest</button>
+                    <button class="sort-btn" data-sort="name">A–Z</button>
+                </div>
+            </div>
+
+            <!-- TABS: Explore / Favorites -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-view="explore">Explore</button>
+                <button class="nav-tab" data-view="favorites">Saved (<span id="fav-count">0</span>)</button>
+            </div>
+
+            <!-- EXPLORE VIEW -->
+            <div id="view-explore">
+                <div class="quick-selector-label">Sites & Wonders</div>
+                <div id="quick-list-container"></div>
+            </div>
+
+            <!-- FAVORITES VIEW -->
+            <div id="view-favorites" style="display: none;">
+                <div class="favorites-section">
+                    <div class="quick-selector-label">Saved Sites</div>
+                    <div id="fav-list-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILS PANEL -->
+        <div id="panel-details" class="panel-state">
+            <button class="back-btn" id="btn-close-details">Back</button>
+
+            <div class="site-header">
+                <div class="site-badges">
+                    <span id="site-country" class="badge">–</span>
+                    <span id="site-category" class="badge">–</span>
+                    <span id="site-type-badge" class="badge primary" style="display: none;">–</span>
+                </div>
+                <button class="fav-main-btn" id="btn-favorite">☆</button>
+            </div>
+
+            <h2 class="site-title" id="site-title">–</h2>
+            <div class="site-meta" id="site-meta">–</div>
+
+            <!-- GALLERY -->
+            <div class="gallery-wrapper">
+                <div class="gallery-main"><img id="gallery-img-active" src="" alt=""></div>
+                <div class="gallery-thumbs" id="gallery-thumbs-container"></div>
+            </div>
+
+            <!-- CONTENT TABS -->
+            <div class="tabs-nav">
+                <button class="tab-trigger active" data-tab="tab-context">Overview</button>
+                <button class="tab-trigger" data-tab="tab-details">Details</button>
+            </div>
+
+            <div id="tab-context" class="tab-panel active">
+                <div id="site-context-dynamic"></div>
+            </div>
+
+            <div id="tab-details" class="tab-panel">
+                <div id="site-details-dynamic"></div>
+            </div>
+
+            <!-- QUIZ SECTION -->
+            <div id="quiz-container"></div>
+
+            <!-- TOUR BUTTON -->
+            <div class="tour-section">
+                <button id="btn-start-tour" class="primary-btn">View Virtual Tour</button>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- MAP CONTROLS -->
+<div class="map-controls">
+    <button id="btn-zoom-in" class="ctrl-btn" title="Zoom in">+</button>
+    <button id="btn-zoom-out" class="ctrl-btn" title="Zoom out">−</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+
+/* ===========================================================
+   HERITAGE DATA – UNESCO + 7 Wonders
+   =========================================================== */
+
+const HERITAGE_DATA = [
+    {
+        id: "colosseum-wonder",
+        type: "wonder",
+        title: "Colosseum",
+        country: "Italy",
+        category: "Architectural Marvel",
+        epochDisplay: "Ancient Rome",
+        builtYear: 80,
+        epoch: "ancient",
+        unescoYear: 1980,
+        coordinates: [41.8902, 12.4922],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1604580864964-0462f5d5b1a8?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Colosseum (Amphitheatrum Flavianum) stands as one of history's most iconic structures. Built between 72-80 AD under the Flavian emperors, this monumental amphitheater could accommodate 50,000 spectators. It is also a UNESCO World Heritage Site, designated in 1980.
+
+The structure represents the pinnacle of Roman engineering and architecture. Its innovative design, including the hypogeum (underground system of elevators, tunnels, and chambers), allowed for the seamless organization of gladiatorial combat and wild animal hunts.`,
+        details: `Construction and Materials: Built primarily from travertine limestone, Roman concrete, and tuff, the Colosseum required approximately 100,000 cubic meters of travertine. Its four stories feature different architectural orders—Doric, Ionic, and Corinthian.
+
+The Hypogeum: Beneath the arena floor lay an intricate two-story underground complex featuring 80 vertical shafts for lifting animals and performers, elaborate water systems for flooding the arena for naval battles, and extensive storage chambers.
+
+Capacity and Evacuation: The building was engineered for rapid evacuation through 80 arched vomitoria (exit passages), allowing the entire audience to exit in mere minutes during emergencies.
+
+Gladiatorial Spectacles: The Colosseum hosted games throughout the year, including battles between gladiators, hunts of exotic animals from across the empire, and elaborate re-enactments of mythological scenes. Water-filled battles (naumachiae) demonstrated the arena's engineering sophistication.`,
+        quiz: [
+            {
+                question: "In what year was the Colosseum completed?",
+                options: ["72 AD", "80 AD", "100 AD"],
+                correct: 1,
+                hint: "It was finished under the reign of Emperor Titus."
+            },
+            {
+                question: "What was the primary purpose of the hypogeum?",
+                options: [
+                    "Storage for food supplies",
+                    "System of elevators and chambers for animals and performers",
+                    "Underground river for water management"
+                ],
+                correct: 1,
+                hint: "Think about how animals and gladiators were transported to the arena floor."
+            },
+            {
+                question: "Approximately how many spectators could the Colosseum hold?",
+                options: ["25,000", "50,000", "100,000"],
+                correct: 1,
+                hint: "It's written in the overview section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [41.8902, 12.4922], zoom: 17 },
+            { coords: [41.8905, 12.4935], zoom: 18 }
+        ]
+    },
+
+    {
+        id: "pyramids-giza",
+        type: "heritage",
+        title: "Pyramids of Giza",
+        country: "Egypt",
+        category: "Ancient Monument",
+        epochDisplay: "Ancient Egypt",
+        builtYear: -2560,
+        epoch: "ancient",
+        unescoYear: 1979,
+        coordinates: [29.9792, 31.1342],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Great Pyramid of Giza remains the largest and most recognizable of the three pyramids on the Giza plateau. Constructed around 2560 BCE for Pharaoh Khufu, it stands as one of the Seven Wonders of the Ancient World and the only one still largely intact today.
+
+Built with approximately 2.3 million limestone blocks, each weighing between 2.5 to 70 tons, the pyramid originally stood 146.5 meters tall. Its construction required an estimated 20 years and the labor of thousands of skilled workers.`,
+        details: `Architectural Precision: The Great Pyramid's sides align with cardinal directions (north, south, east, west) with an accuracy of just 0.05 degrees. This astronomical alignment suggests sophisticated knowledge of mathematics and astronomy among ancient Egyptians.
+
+The Pyramid's Composition: Composed of an inner core of larger blocks and an outer casing of smooth white Tura limestone, the exterior was originally polished to a mirror-like finish. Today, only fragments of the casing stones remain.
+
+Internal Structure: The pyramid contains three burial chambers—the King's Chamber (containing a granite sarcophagus), the Queen's Chamber, and the Subterranean Chamber. These are connected by narrow passages and ventilation shafts of unknown purpose.
+
+Construction Methods: Scholars debate the precise construction technique, though evidence suggests the use of ramps, levers, and water-based lubrication for moving massive stone blocks. The absence of written records makes the exact methodology difficult to determine.
+
+Longevity and Preservation: Despite earthquakes and limestone robbery over millennia, the Great Pyramid's solid core has remained largely intact, making it the longest-standing human-made structure on Earth.`,
+        quiz: [
+            {
+                question: "Approximately how many limestone blocks make up the Great Pyramid?",
+                options: ["1.2 million", "2.3 million", "3.5 million"],
+                correct: 1,
+                hint: "The number is mentioned in the overview."
+            },
+            {
+                question: "How precisely are the pyramid's sides aligned with cardinal directions?",
+                options: ["Within 0.5 degrees", "Within 0.05 degrees", "Within 2 degrees"],
+                correct: 1,
+                hint: "Look in the Architectural Precision section."
+            },
+            {
+                question: "Which chamber contains Khufu's sarcophagus?",
+                options: ["The Queen's Chamber", "The King's Chamber", "The Subterranean Chamber"],
+                correct: 1,
+                hint: "Think about which chamber would be fit for a pharaoh."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [29.9792, 31.1342], zoom: 16 },
+            { coords: [29.9753, 31.1376], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "petra-wonder",
+        type: "wonder",
+        title: "Petra",
+        country: "Jordan",
+        category: "Carved City",
+        epochDisplay: "Nabatean Kingdom",
+        builtYear: -300,
+        epoch: "ancient",
+        unescoYear: 1985,
+        coordinates: [30.3285, 35.4444],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1579606038753-a7ee00c0f4f5?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1501233464357-1450c95840d7?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Petra, meaning "rock" in Greek, is an ancient city carved entirely from rose-red sandstone cliffs in southern Jordan. Established around 300 BCE by the Nabateans, it served as a crucial trading hub connecting Arabia, the Mediterranean, India, and China along the incense and spice routes.
+
+The entire city—including temples, tombs, storage chambers, and a sophisticated water management system—was carved directly into the living rock face. Its most iconic feature, the Treasury (Al-Khazne), greets visitors as they emerge from the narrow Siq gorge.`,
+        details: `The Siq: The primary entrance to Petra is through the Siq, a narrow gorge carved by water and enlarged by human effort. In places, the canyon walls rise over 200 meters apart, and at the narrowest points, they are only 3 meters wide. Walking the 1.2-kilometer passage builds anticipation for the sudden reveal of the Treasury's 40-meter-high façade.
+
+Architectural Marvels: The facades combine Nabatean, Egyptian, and Hellenistic architectural styles. The Treasury's elaborate carved frieze features urns, scrolls, and sculptural figures, though their exact significance remains debated by historians.
+
+Water Management: Despite the arid desert location, Petra thrived due to an ingenious system of dams, cisterns, and channels that captured and preserved every drop of rainfall. This hydraulic engineering was critical to supporting a population of up to 30,000.
+
+The Theater and Monastery: Beyond the Treasury lies a Roman-style theater capable of holding 8,500 spectators, and further into the mountains stands the Monastery (Al-Deir), an even larger carved structure that serves as a testament to Petra's enduring religious and cultural significance.`,
+        quiz: [
+            {
+                question: "What does 'Petra' mean in Greek?",
+                options: ["City", "Rock", "Desert"],
+                correct: 1,
+                hint: "The word is defined in the overview."
+            },
+            {
+                question: "What is the Siq?",
+                options: [
+                    "A water storage chamber",
+                    "A narrow gorge serving as the entrance",
+                    "A large tomb structure"
+                ],
+                correct: 1,
+                hint: "Read the section titled 'The Siq'."
+            },
+            {
+                question: "At its narrowest point, how wide is the Siq?",
+                options: ["10 meters", "5 meters", "3 meters"],
+                correct: 2,
+                hint: "The measurement is provided in the Siq section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [30.3285, 35.4444], zoom: 17 },
+            { coords: [30.3223, 35.4516], zoom: 16 }
+        ]
+    },
+
+    {
+        id: "machu-picchu-wonder",
+        type: "wonder",
+        title: "Machu Picchu",
+        country: "Peru",
+        category: "Inca Citadel",
+        epochDisplay: "Inca Empire",
+        builtYear: 1450,
+        epoch: "modern",
+        unescoYear: 1983,
+        coordinates: [-13.1631, -72.5450],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1587595431973-160d0d94adb1?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Perched 2,430 meters above sea level on a mountain ridge in the Andes, Machu Picchu is an Inca citadel built around 1450 during the reign of Pachacutec. This "Lost City" remained hidden from the Spanish conquistadors and was only revealed to the outside world in 1911 by American historian Hiram Bingham.
+
+The site demonstrates extraordinary architectural achievement in an impossibly challenging location. Built without mortar, using precisely fitted stone blocks, Machu Picchu contains temples, residences, storage chambers, and sophisticated agricultural terraces.`,
+        details: `Ashlar Stonework: The Inca employed a technique called ashlar masonry, where granite blocks were cut with such precision that mortar was unnecessary. Stones fit so tightly that a knife blade cannot be inserted between them. This construction method provided both stability and flexibility—during earthquakes, the stones would move slightly and settle back into place without cracking.
+
+Agricultural Innovation: Over 700 agricultural terraces surround the city, carved into the mountainside to prevent erosion and landslides. These terraces served a dual purpose: food production and geotechnical stability, addressing the extreme rainfall and steep terrain.
+
+Urban Planning: The city is divided into distinct districts—a Royal District with the finest construction, the Sacred Plaza containing temples, and the Common District for laborers and commoners. This spatial organization reflects sophisticated urban planning and social structure.
+
+Astronomical Alignment: Key structures, including the Temple of the Sun and the Intihuatana stone (meaning "hitching post of the sun"), show precise astronomical alignments, suggesting the site held deep religious and calendrical significance.
+
+Discovery and Mystery: The abandonment of Machu Picchu around the time of the Spanish conquest remains unexplained. Theories range from disease epidemics to relocation of the population, but the city was systematically preserved, suggesting an intentional and orderly evacuation.`,
+        quiz: [
+            {
+                question: "At what elevation is Machu Picchu located?",
+                options: ["1,850 meters", "2,430 meters", "3,200 meters"],
+                correct: 1,
+                hint: "The elevation is mentioned in the overview."
+            },
+            {
+                question: "Who is credited with revealing Machu Picchu to the world?",
+                options: ["Francisco Pizarro", "Hiram Bingham", "Garcilaso de la Vega"],
+                correct: 1,
+                hint: "The person's name appears in the overview section."
+            },
+            {
+                question: "What is ashlar masonry?",
+                options: [
+                    "The use of mortar between stones",
+                    "Precisely fitted stone blocks without mortar",
+                    "A decorative stone technique"
+                ],
+                correct: 1,
+                hint: "The ashlar section explains this construction method."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [-13.1631, -72.5450], zoom: 17 },
+            { coords: [-13.1627, -72.5458], zoom: 18 }
+        ]
+    },
+
+    {
+        id: "tajmahal-wonder",
+        type: "wonder",
+        title: "Taj Mahal",
+        country: "India",
+        category: "Mausoleum",
+        epochDisplay: "Mughal Empire",
+        builtYear: 1653,
+        epoch: "modern",
+        unescoYear: 1983,
+        coordinates: [27.1751, 78.0421],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Taj Mahal is a white marble mausoleum built between 1632 and 1653 by Mughal Emperor Shah Jahan in memory of his favorite wife, Mumtaz Mahal, who died during childbirth. Located in Agra, India, it represents the pinnacle of Mughal architecture and one of the world's greatest monuments to love.
+
+The structure encompasses approximately 42 acres and includes the main mausoleum, a mosque, a guest house, and extensive gardens laid out in the classic Mughal style. Inlaid with semi-precious stones and decorated with exquisite calligraphy, it has become an iconic symbol of romance and beauty.`,
+        details: `Architectural Synthesis: The Taj Mahal seamlessly blends Persian, Islamic, and Indian architectural traditions. Its design reflects centuries of Mughal architectural evolution, incorporating elements such as the domed chamber, arched alcoves, and decorative gardens.
+
+Materials and Ornamentation: The main structure is faced with white marble quarried from Makrana in Rajasthan, while the dome is made of white marble with a height of 35 meters. The entire building is inlaid with semi-precious stones—jade, crystal, turquoise, and lapis lazuli—arranged in intricate floral patterns. The Qur'anic verses inscribed around the doorways were written by a master calligrapher and are so precisely carved that they appear painted from a distance.
+
+Foundation Engineering: Built on the banks of the Yamuna River, the structure rests on a complex foundation system including massive stone pilings and layers of rubble to prevent settling. This engineering feat ensures the building's stability despite the soft alluvial soil beneath it.
+
+Symmetry and Proportion: The Taj Mahal achieves almost perfect symmetry along its central axis. The main chamber, four minarets, and surrounding structures follow precise mathematical proportions, creating a sense of balance and harmony that observers find emotionally moving.
+
+The Legend of Shah Jahan: According to legend, Shah Jahan planned to build a black marble mausoleum for himself on the opposite bank of the river—a mirror image of the Taj Mahal. Political turmoil prevented this, and Shah Jahan was imprisoned in the nearby Agra Fort, where he could gaze upon the Taj Mahal from his window.`,
+        quiz: [
+            {
+                question: "For whom did Shah Jahan build the Taj Mahal?",
+                options: ["His mother", "His favorite wife Mumtaz Mahal", "His daughter"],
+                correct: 1,
+                hint: "It's mentioned in the overview."
+            },
+            {
+                question: "What semi-precious stones are inlaid in the Taj Mahal?",
+                options: [
+                    "Diamonds and rubies only",
+                    "Jade, crystal, turquoise, and lapis lazuli",
+                    "Only marble and sandstone"
+                ],
+                correct: 1,
+                hint: "Check the Materials and Ornamentation section."
+            },
+            {
+                question: "How long did the construction of the Taj Mahal take?",
+                options: ["10 years", "20 years", "21 years"],
+                correct: 2,
+                hint: "The dates are given in the overview (1632-1653)."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [27.1751, 78.0421], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "christ-redeemer",
+        type: "wonder",
+        title: "Christ the Redeemer",
+        country: "Brazil",
+        category: "Statue",
+        epochDisplay: "Modern Monument",
+        builtYear: 1931,
+        epoch: "modern",
+        unescoYear: null,
+        coordinates: [-22.9519, -43.2105],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1548963670-7f9c28a9e002?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Standing 30 meters tall (38 meters including the base) atop the Corcovado mountain in Rio de Janeiro, the Christ the Redeemer statue was completed in 1931 as a symbol of Brazilian Christianity and national identity. This Art Deco masterpiece has become one of the most recognizable statues in the world and was named one of the Seven Wonders of the Modern World in 2007.
+
+The monument was constructed using reinforced concrete by Brazilian engineer Heitor da Silva Costa, with the face designed by French sculptor Paul Landowski. Carved from a single piece of soapstone, the statue weighs 635 tons and took nine years to build.`,
+        details: `Design and Construction: The statue's iconic pose—with arms outstretched measuring 28 meters wide—was inspired by the idea of embracing the city below. The Art Deco style was chosen for its geometric simplicity and modern aesthetic. Ironically, the statue's construction preceded the Art Deco movement's peak, making it a pioneer of the style.
+
+Materials: The monument's surface is clad in white soapstone (steatite) imported from Sweden, chosen for its durability and weather resistance. The underlying structure is reinforced concrete, a relatively new material in the 1920s. The soapstone cladding has required periodic restoration due to weathering and lightning strikes.
+
+Lightning Protection: The statue experiences an average of six direct lightning strikes per year due to its elevated position. Multiple metal conductors running through the structure channel this electrical energy safely into the ground. Despite this, the outstretched arms and head have been damaged repeatedly and require regular restoration.
+
+Cultural Significance: For many Brazilians, the statue represents hope, faith, and national pride. It has been featured in countless films, photographs, and works of art. During periods of national difficulty or celebration, the monument is often illuminated in different colors as a form of symbolic communication.
+
+Access and Tourism: A narrow-gauge train transports approximately two million visitors annually to the summit. The viewing platform provides panoramic views of Rio de Janeiro and has become one of the world's most photographed locations.`,
+        quiz: [
+            {
+                question: "In what year was Christ the Redeemer completed?",
+                options: ["1922", "1931", "1940"],
+                correct: 1,
+                hint: "The year is mentioned in the overview."
+            },
+            {
+                question: "What is the statue primarily made of?",
+                options: ["White marble", "Bronze", "Soapstone (steatite)"],
+                correct: 2,
+                hint: "Check the Materials section."
+            },
+            {
+                question: "How wide are the statue's outstretched arms?",
+                options: ["20 meters", "28 meters", "35 meters"],
+                correct: 1,
+                hint: "The width is specified in the Design section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [-22.9519, -43.2105], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "great-wall-wonder",
+        type: "wonder",
+        title: "Great Wall of China",
+        country: "China",
+        category: "Defensive Structure",
+        epochDisplay: "Various Dynasties",
+        builtYear: -221,
+        epoch: "ancient",
+        unescoYear: 1987,
+        coordinates: [40.4319, 116.5704],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1549893072-4bc678117f45?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Great Wall of China is the longest architectural structure in human history, stretching over 21,000 kilometers across northern China. Built over many centuries by various dynasties, beginning with the Qin Dynasty (221 BCE), the wall was designed to protect Chinese territories from invasions by nomadic groups from the north and to regulate trade along the Silk Road.
+
+The most recognizable sections were built during the Ming Dynasty (1368-1644 CE) and stand as testaments to the engineering prowess of ancient China. The wall's construction involved millions of workers and consumed vast quantities of brick, stone, and timber.`,
+        details: `Historical Development: The Great Wall was not built as a single, continuous project. Instead, over two millennia, various emperors and dynasties constructed different sections, often connecting and rebuilding earlier walls. The Qin Dynasty unified many smaller walls into a more cohesive defensive system. However, the Ming Dynasty was responsible for most of the wall visible today.
+
+Construction Methods: The wall was built using locally sourced materials—stone in mountainous regions, brick and earth in plains. Builders employed sophisticated techniques including the use of sticky rice and limestone mortar to bind stones, creating remarkably durable structures that have withstood centuries of weather and seismic activity.
+
+Military Strategy: The wall served multiple defensive purposes: it slowed invading forces, allowed Chinese troops to concentrate their defenses at strategic points, and facilitated communication through a system of beacon fires. Watchtowers spaced at regular intervals provided surveillance and served as garrison points.
+
+Labor Force: Estimates suggest that millions of workers—soldiers, peasants, and prisoners—were involved in the wall's construction over the centuries. Many died during construction, and the wall has been described as "the longest cemetery on earth."
+
+Economic and Trade Functions: Beyond military defense, the Great Wall regulated trade along the Silk Road. Fortified gates served as customs posts where goods were inspected and tariffs collected, making the wall an important economic instrument.
+
+Modern Misconception: The popular claim that the Great Wall is visible from space has been definitively debunked. Astronauts report that while the wall is impressive from aircraft at high altitude, it is far too narrow to be distinguished from orbital space without optical aids.`,
+        quiz: [
+            {
+                question: "How long is the Great Wall of China?",
+                options: ["Over 5,000 kilometers", "Over 13,000 kilometers", "Over 21,000 kilometers"],
+                correct: 2,
+                hint: "The length is stated in the overview."
+            },
+            {
+                question: "Which dynasty constructed most of the wall visible today?",
+                options: ["Qin Dynasty", "Ming Dynasty", "Han Dynasty"],
+                correct: 1,
+                hint: "Check the Historical Development section."
+            },
+            {
+                question: "What material was used as mortar in the Great Wall?",
+                options: [
+                    "Cement",
+                    "Sticky rice and limestone mortar",
+                    "Clay and water"
+                ],
+                correct: 1,
+                hint: "Read the Construction Methods section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [40.4319, 116.5704], zoom: 15 },
+            { coords: [40.4380, 116.5780], zoom: 16 }
+        ]
+    },
+
+    {
+        id: "chichen-itza-wonder",
+        type: "wonder",
+        title: "Chichén Itzá",
+        country: "Mexico",
+        category: "Maya Ruins",
+        epochDisplay: "Classic to Post-Classic Maya",
+        builtYear: 600,
+        epoch: "medieval",
+        unescoYear: 1988,
+        coordinates: [20.6843, -88.5678],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1554014248-049e8573d8d2?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Chichén Itzá was one of the largest urban centers of the ancient Maya civilization, flourishing between 600 and 1200 CE on Mexico's Yucatán Peninsula. The name means "mouth of the well of the Itzá" in Maya, referring to the site's two natural sinkholes (cenotes) that provided water in this arid region.
+
+The city served as a major religious, political, and commercial center, drawing pilgrims and traders from across Mesoamerica. It represents a fascinating blend of Classic Maya and Toltec cultural influences.`,
+        details: `El Castillo (The Castle): The iconic pyramid known as El Castillo or the Temple of Kukulcán is the site's most famous structure. Standing 24 meters tall, the pyramid is an engineering marvel designed to function as a solar calendar. The pyramid has 365 steps—one for each day of the year. Twice annually, during the spring and autumn equinoxes, the setting sun casts a shadow that creates the illusion of a feathered serpent descending the pyramid's side, creating a dramatic visual effect that aligns with the Mayan calendar.
+
+The Great Ball Court: Chichén Itzá features the largest ball court in Mesoamerica, measuring 168 by 70 meters. The exact rules and scoring system of the Maya ball game remain debated, but it appears to have held significant religious and ceremonial importance. The court's acoustics are remarkable—a whisper at one end can be clearly heard at the other.
+
+Sacred Cenotes: The two cenotes (natural sinkholes) were central to Maya religious practice. The northern cenote was used for rituals and sacrifices, while the smaller southern cenote served domestic purposes. Archaeological dredging of the northern cenote has yielded numerous artifacts, including jade ornaments, copper bells, and pottery.
+
+Astronomical Precision: Multiple structures at Chichén Itzá demonstrate sophisticated astronomical knowledge. The Caracol (an observatory with a spiral staircase) has windows aligned with specific celestial events. The Plataforma de las Águilas y Jaguares features carvings related to celestial observations.
+
+Toltec Influences: The presence of Toltec architectural elements, particularly evident in the Temple of Warriors with its distinctive Atlantean figures (columns carved as warriors), suggests cultural exchange and possibly military conquest or peaceful integration of Toltec peoples.`,
+        quiz: [
+            {
+                question: "What does 'Chichén Itzá' mean?",
+                options: [
+                    "Great serpent temple",
+                    "Mouth of the well of the Itzá",
+                    "City of feathered serpent"
+                ],
+                correct: 1,
+                hint: "The meaning is provided in the overview."
+            },
+            {
+                question: "How many steps does El Castillo have?",
+                options: ["313", "365", "400"],
+                correct: 1,
+                hint: "Look in the El Castillo section—it's related to the calendar."
+            },
+            {
+                question: "What phenomenon occurs at the spring and autumn equinoxes?",
+                options: [
+                    "The entire pyramid illuminates",
+                    "A shadow creates the illusion of a feathered serpent",
+                    "Water emerges from the cenote"
+                ],
+                correct: 1,
+                hint: "The effect is described in the El Castillo section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [20.6843, -88.5678], zoom: 17 },
+            { coords: [20.6830, -88.5700], zoom: 18 }
+        ]
+    },
+
+    {
+        id: "kyoto",
+        type: "heritage",
+        title: "Historic Kyoto",
+        country: "Japan",
+        category: "Imperial Capital",
+        epochDisplay: "Heian to Edo Period",
+        builtYear: 794,
+        epoch: "medieval",
+        unescoYear: 1994,
+        coordinates: [34.9948, 135.7850],
+        zoom: 14,
+        images: [
+            "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1583400470628-3abb0a4c5194?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Kyoto served as the capital of Japan for over 1,000 years, from 794 until 1868 when the imperial court moved to Tokyo. The city remains home to 17 UNESCO World Heritage temples and shrines, representing the pinnacle of Japanese architecture, garden design, and artistic tradition.
+
+The historic city preserves countless traditional wooden machiya houses, immaculate gardens, and ancient temples that collectively embody the aesthetic and spiritual values of Japanese culture across multiple historical periods.`,
+        details: `Architectural Heritage: Kyoto's temples showcase distinct architectural styles corresponding to different historical periods. Kiyomizu-dera (founded 778) features traditional Edo period architecture with a celebrated wooden platform. Fushimi Inari Taisha is famous for thousands of vermillion torii gates winding up a mountainside. The Golden Pavilion (Kinkaku-ji) and Silver Pavilion (Ginkaku-ji) exemplify Zen Buddhist aesthetics and garden design.
+
+Nightingale Floors: The Nijo Castle, built in 1603 as the Kyoto residence of the Tokugawa shogun, features an ingenious architectural innovation: nightingale floors. These wooden floors are constructed with specially fitted boards that produce a characteristic high-pitched chirping or squeaking sound when walked upon—an unintentional but highly effective burglar alarm that alerted inhabitants to the presence of intruders.
+
+Garden Design: Kyoto's gardens represent centuries of accumulated horticultural wisdom. The dry rock gardens (karesansui) of temples like Ryoan-ji use rocks, sand, and carefully pruned vegetation to suggest landscape elements. The extensive gardens of the Imperial Palace and numerous temples demonstrate sophisticated principles of composition, seasonal change, and aesthetic harmony.
+
+Traditional Arts: Kyoto remains the center of traditional Japanese arts, including kabuki theater, geisha culture, and traditional crafts. The Gion district preserves a historic geisha quarter with traditional wooden teahouses. Several kabuki theaters continue performances of classical plays that have been staged for centuries.
+
+Festival Traditions: Kyoto hosts numerous traditional festivals throughout the year. The Gion Matsuri, held in July, is one of Japan's most famous festivals, featuring processions of elaborate floats decorated with precious artifacts and textiles.`,
+        quiz: [
+            {
+                question: "How long was Kyoto the capital of Japan?",
+                options: ["500 years", "Over 1,000 years", "300 years"],
+                correct: 1,
+                hint: "The timeframe is mentioned in the overview."
+            },
+            {
+                question: "What is the purpose of nightingale floors?",
+                options: [
+                    "To prevent earthquakes",
+                    "To produce music",
+                    "To alert inhabitants of intruders"
+                ],
+                correct: 2,
+                hint: "Read the Nightingale Floors section."
+            },
+            {
+                question: "How many UNESCO World Heritage temples and shrines are in Kyoto?",
+                options: ["12", "15", "17"],
+                correct: 2,
+                hint: "The number is stated in the overview."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [34.9948, 135.7850], zoom: 16 },
+            { coords: [35.0394, 135.7292], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "angkor-wat",
+        type: "heritage",
+        title: "Angkor Wat",
+        country: "Cambodia",
+        category: "Temple Complex",
+        epochDisplay: "Khmer Empire",
+        builtYear: 1113,
+        epoch: "medieval",
+        unescoYear: 1992,
+        coordinates: [13.3667, 103.8469],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1569163139394-de4798aa62b3?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Angkor Wat is the largest religious monument in the world, originally constructed as a Hindu temple dedicated to the god Vishnu in the early 12th century under Khmer King Suryavarman II. Covering 1,626 square kilometers, the temple complex represents the zenith of Khmer architectural and artistic achievement.
+
+Over time, Angkor Wat transitioned from Hindu to Buddhist worship, and today it remains Cambodia's most important cultural symbol and an iconic representation of Southeast Asian heritage. The temple was built without mortar, using precisely fitted sandstone blocks.`,
+        details: `Architectural Layout: Angkor Wat is designed as a microcosm of the Hindu universe, with the central quincunx of towers representing Mount Meru (the center of the universe in Hindu cosmology). The temple is surrounded by a moat representing the ocean, with causeway entrances at cardinal points. The structure rises through three concentric galleries to the central sanctuary tower, which once stood over 65 meters tall.
+
+Construction Scale: The temple required an estimated 300,000 workers over 30 years to complete. The precision of construction is remarkable—stone blocks are fitted so tightly that mortar was unnecessary. Some estimates suggest the total weight of sandstone used exceeds 10 million tons.
+
+Bas-Reliefs: The walls of the lower galleries are covered with over 1,200 square meters of intricately carved bas-reliefs depicting scenes from Hindu epics, particularly the Mahabharata and Ramayana. These narratives served both religious and historical purposes, recording the glory of the Khmer Empire and instructing visitors in Hindu philosophy.
+
+Artistic Innovations: Angkor Wat exemplifies Khmer classical style, characterized by balanced proportions, intricate ornamentation, and sophisticated sculptural work. The apsara (celestial dancing figures) carvings are particularly renowned for their graceful poses and detailed execution. Over 2,000 apsara figures are carved throughout the temple.
+
+Hydraulic Engineering: The wider Angkor complex featured an advanced water management system with barays (reservoirs) and canals that supported agricultural production and prevented flooding. This hydraulic infrastructure allowed the Khmer civilization to support a population of nearly a million people.`,
+        quiz: [
+            {
+                question: "To which Hindu god was Angkor Wat originally dedicated?",
+                options: ["Shiva", "Brahma", "Vishnu"],
+                correct: 2,
+                hint: "The deity is mentioned in the overview."
+            },
+            {
+                question: "Approximately how many apsara (dancing figure) sculptures are in Angkor Wat?",
+                options: ["500", "1,000", "2,000"],
+                correct: 2,
+                hint: "Check the Artistic Innovations section."
+            },
+            {
+                question: "What does the central tower represent in the Hindu cosmological design?",
+                options: [
+                    "A fortress",
+                    "Mount Meru (center of the universe)",
+                    "A royal residence"
+                ],
+                correct: 1,
+                hint: "Read the Architectural Layout section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [13.3667, 103.8469], zoom: 16 },
+            { coords: [13.3612, 103.8469], zoom: 15 }
+        ]
+    },
+
+    {
+        id: "statue-liberty",
+        type: "heritage",
+        title: "Statue of Liberty",
+        country: "United States",
+        category: "Monument",
+        epochDisplay: "19th Century",
+        builtYear: 1886,
+        epoch: "modern",
+        unescoYear: 1984,
+        coordinates: [40.6892, -74.0445],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1498855926480-d98e83099315?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1487495307983-2d71a8b6e5ca?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Statue of Liberty was a gift from France to the United States, dedicated in 1886 as a symbol of liberty and democracy. Designed by French sculptor Frédéric Auguste Bartholdi, the 93-meter-tall (305 feet) copper monument stands on Liberty Island in New York Harbor and has become one of the world's most iconic symbols of freedom.
+
+Dedicated on October 28, 1886, by President Grover Cleveland, the statue has welcomed millions of immigrants arriving in America. The inscription on the pedestal reads: "Give me your tired, your poor, your huddled masses yearning to breathe free."`,
+        details: `Design and Engineering: The statue's internal iron framework was designed by none other than Gustave Eiffel (who later designed the Eiffel Tower). The framework consists of an iron pylon and secondary skeletal framework that allows the copper sheets to move slightly with wind and temperature changes. This flexibility has proven essential to the structure's longevity.
+
+Symbolism: Lady Liberty holds a torch raised high in her right hand, representing enlightenment and hope. In her left hand, she holds a tablet inscribed with the date of American independence (July 4, 1776). A broken chain lies at her feet, symbolizing liberation from oppression and slavery.
+
+The Crown: The statue's crown features seven points, traditionally interpreted as representing the seven continents or seven seas. The crown contains 25 windows, allowing visitors to observe the harbor and city from within the monument itself. Originally, the crown was intended to house a lighthouse.
+
+Copper Exterior: The statue's striking blue-green patina is copper oxide that formed over decades as the copper exterior oxidized. The original copper was bright reddish-brown but gradually developed this iconic greenish hue. A major restoration in 1986 replaced corroded internal ironwork and strengthened the torch-bearing arm.
+
+Pedestal and Base: The statue rests on a granite and concrete pedestal designed by American architect Richard Morris Hunt. Within the pedestal, a museum chronicles the statue's history and the immigration experience. The complex serves as a portal to Ellis Island, historically the entry point for millions of immigrants.`,
+        quiz: [
+            {
+                question: "In what year was the Statue of Liberty dedicated?",
+                options: ["1876", "1884", "1886"],
+                correct: 2,
+                hint: "The year is mentioned in the overview."
+            },
+            {
+                question: "Who designed the statue's internal iron framework?",
+                options: [
+                    "Richard Morris Hunt",
+                    "Gustave Eiffel",
+                    "Thomas Edison"
+                ],
+                correct: 1,
+                hint: "Read the Design and Engineering section."
+            },
+            {
+                question: "What does the broken chain at the statue's feet symbolize?",
+                options: [
+                    "America's industrial strength",
+                    "Liberation from oppression and slavery",
+                    "The strength of the nation"
+                ],
+                correct: 1,
+                hint: "Check the Symbolism section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [40.6892, -74.0445], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "alhambra",
+        type: "heritage",
+        title: "Alhambra",
+        country: "Spain",
+        category: "Palace Complex",
+        epochDisplay: "Islamic Spain",
+        builtYear: 1248,
+        epoch: "medieval",
+        unescoYear: 1984,
+        coordinates: [37.1759, -3.5881],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1548013146-b6a63d6ffd1c?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1600585152915-d3400ca199a8?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `The Alhambra is a fortified palace complex located in Granada, Spain, built during the Islamic Nasrid Dynasty in the 13th-14th centuries. The name derives from the Arabic "al-qal'ah al-hamra," meaning "the red fortress," referring to the reddish clay bricks used in its construction.
+
+This masterpiece of Islamic architecture represents the pinnacle of Andalusian Islamic art and culture. The complex includes the royal palaces, administrative buildings, mosques, baths, residential quarters, and fortification walls. Its exquisite decoration and sophisticated spatial design influenced European architecture and design for centuries.`,
+        details: `Architectural Sections: The Alcazaba is the oldest section, a fortress with towers and defensive walls overlooking Granada. The Nasrid Palaces contain the most intimate and artistically refined spaces, including the Court of Lions and the Court of Myrtles. The Generalife, a separate pleasure palace, features extensive gardens with fountains and water features designed as an earthly paradise in Islamic tradition.
+
+Decorative Elements: The Alhambra's interior surfaces display extraordinary decoration, including intricate carved stucco, glazed ceramic tilework, and elaborate wooden ceiling panels. The walls feature repeating geometric and calligraphic patterns, including extensive Arabic inscriptions including poems, religious texts, and historical records. The famous motto "There is no conqueror but God" appears repeatedly throughout the palaces.
+
+Water Features: Water is integrated throughout the complex as both functional and aesthetic element. The Court of Lions features a central fountain with 12 marble lion sculptures. Channels carry water through gardens and courtyards, providing cooling and creating the sound of flowing water central to Islamic garden design.
+
+The Court of Lions: This iconic space is surrounded by arcades supported by 124 delicate marble columns. The fountain at the center rests on a marble basin supported by 12 lion sculptures. The arches feature elaborate muqarnas (honeycomb) vaulting—a complex three-dimensional geometric pattern created through interlocking components without mortar.
+
+Preservation Challenges: The Alhambra faced significant deterioration through the 19th century due to neglect and alterations. Restoration efforts beginning in the late 19th century have carefully preserved the original decorative schemes while adapting the complex for modern use as a museum and cultural site.`,
+        quiz: [
+            {
+                question: "What does 'Alhambra' mean in Arabic?",
+                options: [
+                    "Palace of the sultan",
+                    "The red fortress",
+                    "Court of lions"
+                ],
+                correct: 1,
+                hint: "The meaning is explained in the overview."
+            },
+            {
+                question: "How many marble lion sculptures support the fountain in the Court of Lions?",
+                options: ["8", "12", "16"],
+                correct: 1,
+                hint: "The number is mentioned in The Court of Lions section."
+            },
+            {
+                question: "What are muqarnas?",
+                options: [
+                    "Glazed tiles",
+                    "Honeycomb-like geometric vaulting patterns",
+                    "Water channels"
+                ],
+                correct: 1,
+                hint: "Read the Court of Lions section."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [37.1759, -3.5881], zoom: 16 },
+            { coords: [37.1770, -3.5900], zoom: 15 }
+        ]
+    }
+];
+
+/* EPOCH COLORS */
+const EPOCH_COLORS = { ancient: "#8B0000", medieval: "#8B6914", modern: "#2C5F2E" };
+const TILE_LAYERS = {
+    light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+    dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+};
+
+/* STATE */
+let map, activeTileLayer, currentTheme = "light";
+let userXP = parseInt(localStorage.getItem("chronos_xp_v5")) || 0;
+const MAX_XP = HERITAGE_DATA.length * 3 * 50; // 3 questions × 50 XP each
+let completedQuizzes = JSON.parse(localStorage.getItem("chronos_completed_v5")) || {};
+let favorites = JSON.parse(localStorage.getItem("chronos_favs_v5")) || [];
+let activeSite = null;
+let activeFilter = "all";
+let activeSort = "default";
+let currentView = "explore";
+
+/* INIT */
+document.addEventListener("DOMContentLoaded", () => {
+    const bounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
+    map = L.map("map", {
+        zoomControl: false, attributionControl: false,
+        minZoom: 2.3, maxBounds: bounds, maxBoundsViscosity: 1.0
+    }).setView([20, 10], 3);
+
+    activeTileLayer = L.tileLayer(TILE_LAYERS[currentTheme], { maxZoom: 19, noWrap: true }).addTo(map);
+
+    HERITAGE_DATA.forEach(site => {
+        const marker = createMarker(site);
+        marker.addTo(map).on("click", () => selectSite(site));
+    });
+
+    updateXPUI();
+    renderList();
+    renderFavList();
+    setupEvents();
+});
+
+function createMarker(site) {
+    if (site.type === "wonder") {
+        const icon = L.divIcon({
+            className: "wonder-marker",
+            html: `<div class="wonder-wrap"><div class="wonder-star">★</div><div class="wonder-ring"></div></div>`,
+            iconSize: [28, 28], iconAnchor: [14, 14]
+        });
+        return L.marker(site.coordinates, { icon });
+    } else {
+        const color = EPOCH_COLORS[site.epoch] || "#1B4F8A";
+        const icon = L.divIcon({
+            className: "custom-marker",
+            html: `<div class="marker-wrap"><div class="marker-core" style="background:${color}"></div><div class="marker-ring" style="background:${color}44"></div></div>`,
+            iconSize: [22, 22], iconAnchor: [11, 11]
+        });
+        return L.marker(site.coordinates, { icon });
+    }
+}
+
+function updateXPUI() {
+    document.getElementById("xp-points").textContent = userXP;
+    document.getElementById("xp-fill").style.width = `${Math.min((userXP / MAX_XP) * 100, 100)}%`;
+}
+
+function getFilteredSorted() {
+    let data = [...HERITAGE_DATA];
+    if (activeFilter === "wonder") data = data.filter(s => s.type === "wonder");
+    else if (activeFilter === "ancient") data = data.filter(s => s.epoch === "ancient" && s.type === "heritage");
+    else if (activeFilter === "medieval") data = data.filter(s => s.epoch === "medieval" && s.type === "heritage");
+    else if (activeFilter === "modern") data = data.filter(s => s.epoch === "modern" && s.type === "heritage");
+
+    if (activeSort === "oldest") data.sort((a, b) => a.builtYear - b.builtYear);
+    else if (activeSort === "newest") data.sort((a, b) => b.builtYear - a.builtYear);
+    else if (activeSort === "name") data.sort((a, b) => a.title.localeCompare(b.title));
+
+    return data;
+}
+
+function renderList() {
+    const container = document.getElementById("quick-list-container");
+    const data = getFilteredSorted();
+    container.innerHTML = "";
+
+    data.forEach(site => {
+        const item = document.createElement("button");
+        item.className = "quick-item";
+        const isFav = favorites.includes(site.id);
+        const color = site.type === "wonder" ? "#F97316" : EPOCH_COLORS[site.epoch];
+
+        const yearDisplay = site.builtYear < 0 ? `${Math.abs(site.builtYear)} BCE` : `${site.builtYear} CE`;
+        const icon = site.type === "wonder" ? "★" : "●";
+
+        item.innerHTML = `
+            <div style="font-size: 16px; opacity: 0.6;">${icon}</div>
+            <div class="quick-item-body">
+                <div class="quick-item-title">${site.title}</div>
+                <div class="quick-item-meta">${site.country} — ${yearDisplay}</div>
+            </div>
+            <span class="quick-item-fav">${isFav ? "★" : "☆"}</span>
+        `;
+
+        item.addEventListener("click", (e) => {
+            if (e.target.classList.contains("quick-item-fav")) { toggleFav(site.id); return; }
+            selectSite(site);
+        });
+
+        container.appendChild(item);
+    });
+}
+
+function toggleFav(id) {
+    const idx = favorites.indexOf(id);
+    if (idx === -1) favorites.push(id);
+    else favorites.splice(idx, 1);
+    localStorage.setItem("chronos_favs_v5", JSON.stringify(favorites));
+    document.getElementById("fav-count").textContent = favorites.length;
+    renderList();
+    renderFavList();
+    if (activeSite && activeSite.id === id) {
+        document.getElementById("btn-favorite").textContent = favorites.includes(id) ? "★" : "☆";
+    }
+}
+
+function renderFavList() {
+    const container = document.getElementById("fav-list-container");
+    document.getElementById("fav-count").textContent = favorites.length;
+    container.innerHTML = "";
+    if (favorites.length === 0) {
+        container.innerHTML = `<div class="empty-fav">No saved sites yet</div>`;
+        return;
+    }
+    favorites.forEach(id => {
+        const site = HERITAGE_DATA.find(s => s.id === id);
+        if (!site) return;
+        const item = document.createElement("div");
+        item.className = "fav-item";
+        item.innerHTML = `
+            <span style="opacity: 0.7; margin-right: 4px;">${site.type === "wonder" ? "★" : "●"}</span>
+            <div style="flex: 1;">
+                <div class="fav-item-title">${site.title}</div>
+                <div class="fav-item-country">${site.country}</div>
+            </div>
+            <span class="fav-remove" data-id="${id}">✕</span>
+        `;
+        item.addEventListener("click", (e) => {
+            if (e.target.classList.contains("fav-remove")) { toggleFav(id); return; }
+            selectSite(site);
+        });
+        container.appendChild(item);
+    });
+}
+
+function setupEvents() {
+    document.getElementById("btn-toggle-theme").addEventListener("click", () => {
+        currentTheme = currentTheme === "light" ? "dark" : "light";
+        document.body.className = currentTheme === "dark" ? "dark-theme" : "";
+        activeTileLayer.setUrl(TILE_LAYERS[currentTheme]);
+    });
+
+    document.getElementById("btn-zoom-in").addEventListener("click", () => map.zoomIn());
+    document.getElementById("btn-zoom-out").addEventListener("click", () => map.zoomOut());
+
+    document.getElementById("btn-close-details").addEventListener("click", () => {
+        document.getElementById("panel-details").classList.remove("active");
+        setTimeout(() => {
+            document.getElementById("panel-welcome").classList.add("active");
+            map.flyTo([20, 10], 3, { duration: 1.5 });
+            activeSite = null;
+        }, 300);
+    });
+
+    document.querySelectorAll(".tab-trigger").forEach(tab => {
+        tab.addEventListener("click", (e) => {
+            document.querySelectorAll(".tab-trigger").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            e.currentTarget.classList.add("active");
+            document.getElementById(e.currentTarget.dataset.tab).classList.add("active");
+        });
+    });
+
+    document.getElementById("btn-start-tour").addEventListener("click", () => {
+        if (activeSite?.tourWaypoints) runTour(activeSite.tourWaypoints);
+    });
+
+    document.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", (e) => {
+            document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+            e.currentTarget.classList.add("active");
+            activeFilter = e.currentTarget.dataset.filter;
+            renderList();
+        });
+    });
+
+    document.querySelectorAll(".sort-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+            e.currentTarget.classList.add("active");
+            activeSort = e.currentTarget.dataset.sort;
+            renderList();
+        });
+    });
+
+    document.querySelectorAll(".nav-tab").forEach(tab => {
+        tab.addEventListener("click", (e) => {
+            document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+            e.currentTarget.classList.add("active");
+            currentView = e.currentTarget.dataset.view;
+            document.getElementById("view-explore").style.display = currentView === "explore" ? "block" : "none";
+            document.getElementById("view-favorites").style.display = currentView === "favorites" ? "block" : "none";
+        });
+    });
+
+    document.getElementById("btn-favorite").addEventListener("click", () => {
+        if (activeSite) toggleFav(activeSite.id);
+    });
+}
+
+function selectSite(site) {
+    activeSite = site;
+    map.flyTo(site.coordinates, site.zoom, { duration: 1.6 });
+
+    document.getElementById("site-country").textContent = site.country;
+    document.getElementById("site-category").textContent = site.category;
+    const typeBadge = document.getElementById("site-type-badge");
+    if (site.type === "wonder") {
+        typeBadge.textContent = "Seven Wonder";
+        typeBadge.style.display = "inline-block";
+    } else { typeBadge.style.display = "none"; }
+
+    document.getElementById("site-title").textContent = site.title;
+    const yearStr = site.builtYear < 0
+        ? `Built ${Math.abs(site.builtYear)} BCE · UNESCO ${site.unescoYear || "–"}`
+        : `Built ${site.builtYear} CE · UNESCO ${site.unescoYear || "–"}`;
+    document.getElementById("site-meta").textContent = yearStr;
+
+    document.getElementById("btn-favorite").textContent = favorites.includes(site.id) ? "★" : "☆";
+
+    const mainImg = document.getElementById("gallery-img-active");
+    mainImg.src = site.images[0];
+    const thumbCont = document.getElementById("gallery-thumbs-container");
+    thumbCont.innerHTML = "";
+    site.images.forEach((url, i) => {
+        const t = document.createElement("div");
+        t.className = `thumb-item ${i === 0 ? "active" : ""}`;
+        t.innerHTML = `<img src="${url}" alt="">`;
+        t.addEventListener("click", () => {
+            document.querySelectorAll(".thumb-item").forEach(x => x.classList.remove("active"));
+            t.classList.add("active");
+            mainImg.src = url;
+        });
+        thumbCont.appendChild(t);
+    });
+
+    document.getElementById("site-context-dynamic").innerHTML = `<div class="content-text">${site.overview}</div>`;
+    document.getElementById("site-details-dynamic").innerHTML = `<div class="content-text">${site.details}</div>`;
+
+    document.querySelectorAll(".tab-trigger").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelector('[data-tab="tab-context"]').classList.add("active");
+    document.getElementById("tab-context").classList.add("active");
+
+    buildQuiz(site);
+
+    document.getElementById("panel-welcome").classList.remove("active");
+    setTimeout(() => document.getElementById("panel-details").classList.add("active"), 300);
+}
+
+function buildQuiz(site) {
+    const container = document.getElementById("quiz-container");
+    container.innerHTML = "";
+
+    site.quiz.forEach((q, qIdx) => {
+        const card = document.createElement("div");
+        card.className = "quiz-card";
+        card.innerHTML = `
+            <div class="quiz-header">
+                <div class="quiz-title">Question ${qIdx + 1}/3</div>
+                <div class="quiz-counter">${q.correct === null ? "–" : "–"}</div>
+            </div>
+            <div class="quiz-question">${q.question}</div>
+            <div class="quiz-options" data-qidx="${qIdx}"></div>
+            <div class="quiz-hint" data-qidx="${qIdx}"></div>
+            <div class="task-success hidden" data-qidx="${qIdx}">
+                <div class="success-icon">✓</div>
+                <span>+50 XP</span>
+            </div>
+        `;
+        container.appendChild(card);
+
+        const optsContainer = card.querySelector(".quiz-options");
+        q.options.forEach((opt, oIdx) => {
+            const btn = document.createElement("button");
+            btn.className = "quiz-option";
+            btn.textContent = opt;
+            btn.dataset.oidx = oIdx;
+            btn.addEventListener("click", () => handleQuizAnswer(site, qIdx, oIdx, btn, card));
+            optsContainer.appendChild(btn);
+        });
+    });
+}
+
+function handleQuizAnswer(site, qIdx, oIdx, btn, card) {
+    const q = site.quiz[qIdx];
+    if (btn.classList.contains("disabled")) return;
+
+    if (oIdx === q.correct) {
+        card.querySelectorAll(".quiz-option").forEach(b => b.classList.add("disabled"));
+        btn.classList.add("correct");
+        card.querySelector(".quiz-hint").style.display = "none";
+        setTimeout(() => {
+            userXP += 50;
+            if (!completedQuizzes[site.id]) completedQuizzes[site.id] = {};
+            completedQuizzes[site.id][qIdx] = true;
+            localStorage.setItem("chronos_xp_v5", userXP);
+            localStorage.setItem("chronos_completed_v5", JSON.stringify(completedQuizzes));
+            updateXPUI();
+            card.querySelector(".task-success").classList.remove("hidden");
+        }, 500);
+    } else {
+        btn.classList.add("wrong", "disabled");
+        const hint = card.querySelector(".quiz-hint");
+        hint.textContent = q.hint;
+        hint.style.display = "block";
+    }
+}
+
+function runTour(waypoints) {
+    const btn = document.getElementById("btn-start-tour");
+    btn.disabled = true;
+    let step = 0;
+    function next() {
+        if (step >= waypoints.length) {
+            btn.disabled = false;
+            btn.textContent = "View Virtual Tour";
+            if (activeSite) map.flyTo(activeSite.coordinates, activeSite.zoom, { duration: 1.5 });
+            return;
+        }
+        btn.textContent = `Viewing ${step + 1}/${waypoints.length}...`;
+        const wp = waypoints[step];
+        map.flyTo(wp.coords, wp.zoom, { duration: 2.2 });
+        step++;
+        setTimeout(next, 4000);
+    }
+    next();
+}
+</script>
+
+</body>
+</html>
