@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS – Global Heritage Explorer</title>
+    <title>CHRONOS – Globales Welterbe</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 /* ============================================================
-   CHRONOS v3 – MODERN GLASSMORPHISM DESIGN
-   Apple-inspired, minimal, 100% serifenless
+   CHRONOS v4 – MODERN GLASSMORPHISM DESIGN
+   Apple-inspired, minimal, 100% serifenlos, German
    ============================================================ */
 
 :root {
-    /* Neutral Palette */
     --white:           #FFFFFF;
     --off-white:       #F9FAFB;
     --gray-50:         #F3F4F6;
@@ -26,7 +25,6 @@
     --gray-900:        #111827;
     --black:           #000000;
     
-    /* Accent Colors */
     --blue:            #0066CC;
     --blue-light:      #E0EEFF;
     --blue-dark:       #003399;
@@ -34,7 +32,6 @@
     --green:           #34A853;
     --amber:           #F97316;
     
-    /* Theme Variables */
     --bg:              var(--white);
     --surface:         rgba(255, 255, 255, 0.7);
     --surface-dark:    rgba(0, 0, 0, 0.05);
@@ -48,7 +45,6 @@
     --accent:          var(--blue);
     --accent-light:    var(--blue-light);
     
-    /* Glassmorphism */
     --glass-blur:      backdrop-filter: blur(12px) saturate(180%);
     --glass-border:    border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -75,10 +71,8 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* MAP */
 #map { position: absolute; inset: 0; z-index: 1; }
 
-/* HEADER */
 .app-header {
     position: absolute; top: 12px; left: 12px; right: 12px; height: 64px;
     background: var(--surface);
@@ -106,7 +100,6 @@ body {
 .xp-bar { width: 140px; height: 4px; background: var(--surface-dark); border-radius: 2px; overflow: hidden; margin-top: 3px; }
 .xp-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.5s ease; border-radius: 2px; }
 
-/* SIDEBAR */
 .main-container {
     position: absolute; top: 88px; left: 12px; bottom: 12px;
     width: 440px; z-index: 10; pointer-events: none;
@@ -132,7 +125,6 @@ body {
 .panel-state { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
 .panel-state.active { display: block; opacity: 1; transform: translateY(0); }
 
-/* WELCOME SECTION */
 .welcome-header { margin-bottom: 24px; }
 .section-label {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
@@ -149,7 +141,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* LEGEND */
 .legend-card {
     background: var(--surface-dark);
     border: 1px solid var(--border);
@@ -172,7 +163,6 @@ h2 {
     border: 2px solid var(--white);
 }
 
-/* FILTERS */
 .filter-group { margin-bottom: 18px; }
 .filter-label {
     font-size: 12px; font-weight: 600; color: var(--text);
@@ -201,7 +191,6 @@ h2 {
     border-color: var(--accent);
 }
 
-/* SORT */
 .sort-row {
     display: flex; align-items: center; gap: 8px;
 }
@@ -220,7 +209,6 @@ h2 {
 .sort-btn:hover { border-color: var(--accent); color: var(--accent); }
 .sort-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-/* TABS */
 .nav-tabs {
     display: flex; gap: 8px; margin-bottom: 16px;
 }
@@ -234,7 +222,6 @@ h2 {
 .nav-tab:hover { border-color: var(--accent); color: var(--accent); }
 .nav-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-/* QUICK LIST */
 .quick-selector-label {
     font-size: 12px; font-weight: 600; color: var(--text);
     margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
@@ -273,7 +260,6 @@ h2 {
 
 .quick-item-fav:hover { transform: scale(1.2); }
 
-/* FAVORITES */
 .favorites-section { margin-top: 20px; }
 .fav-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -307,7 +293,6 @@ h2 {
     text-align: center; padding: 20px; font-style: italic;
 }
 
-/* DETAILS PANEL */
 .back-btn {
     background: none; border: none; color: var(--accent);
     font-size: 13px; font-weight: 600; cursor: pointer;
@@ -350,7 +335,6 @@ h2 {
     font-size: 12px; color: var(--text-secondary); margin-bottom: 18px;
 }
 
-/* GALLERY */
 .gallery-wrapper {
     border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
     margin-bottom: 20px; background: var(--surface-dark);
@@ -380,7 +364,6 @@ h2 {
 .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
 .thumb-item.active { border-color: var(--accent); opacity: 1; }
 
-/* CONTENT TABS */
 .tabs-nav {
     display: flex; background: var(--surface-dark);
     border: 1px solid var(--border); padding: 4px; border-radius: 10px;
@@ -431,18 +414,6 @@ h2 {
     color: var(--accent); text-decoration: none; font-weight: 600;
 }
 
-.anecdote-box {
-    background: var(--surface-dark);
-    border-left: 3px solid var(--accent);
-    padding: 14px; border-radius: 0 10px 10px 0;
-}
-
-.anecdote-text {
-    font-size: 13.5px; line-height: 1.7; color: var(--text-secondary);
-    font-style: italic;
-}
-
-/* QUIZ */
 .quiz-card {
     background: var(--surface-dark); border: 1px solid var(--border);
     border-radius: 14px; padding: 18px; margin-top: 20px;
@@ -521,7 +492,6 @@ body.dark-theme .task-success {
     font-size: 32px;
 }
 
-/* BUTTONS */
 .primary-btn {
     width: 100%; background: var(--accent); color: white; border: none;
     padding: 12px 18px; font-size: 14px; font-weight: 600; border-radius: 10px;
@@ -538,7 +508,6 @@ body.dark-theme .task-success {
 
 .tour-section { margin-top: 16px; }
 
-/* MAP CONTROLS */
 .map-controls {
     position: absolute; bottom: 20px; right: 20px; z-index: 20;
     display: flex; flex-direction: column; gap: 8px;
@@ -560,49 +529,25 @@ body.dark-theme .task-success {
     color: var(--accent);
 }
 
-/* MARKERS */
+/* MARKERS – NO ANIMATIONS */
 .custom-marker { background: none; border: none; }
-.marker-wrap { position: relative; width: 22px; height: 22px; }
+.marker-wrap { position: relative; width: 14px; height: 14px; }
 .marker-core {
-    width: 14px; height: 14px; border: 2.5px solid white; border-radius: 50%;
-    position: absolute; top: 4px; left: 4px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4); z-index: 2;
-}
-
-.marker-ring {
-    width: 22px; height: 22px; border-radius: 50%;
-    position: absolute; inset: 0; z-index: 1;
-    animation: markerPulse 2.5s infinite ease-out;
+    width: 8px; height: 8px; border: 1.5px solid white; border-radius: 50%;
+    position: absolute; top: 3px; left: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); z-index: 2;
 }
 
 .wonder-marker { background: none; border: none; }
-.wonder-wrap { position: relative; width: 28px; height: 28px; }
+.wonder-wrap { position: relative; width: 16px; height: 16px; }
 .wonder-star {
-    font-size: 22px; position: absolute; top: 3px; left: 3px;
-    filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.8));
-    animation: starTwinkle 3s infinite ease-in-out; z-index: 2;
-}
-
-.wonder-ring {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(249, 115, 22, 0.3);
-    position: absolute; inset: 0;
-    animation: markerPulse 3s infinite ease-out 0.5s; z-index: 1;
-}
-
-@keyframes markerPulse {
-    0% { transform: scale(0.5); opacity: 0.8; }
-    100% { transform: scale(2.5); opacity: 0; }
-}
-
-@keyframes starTwinkle {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    font-size: 14px; position: absolute; top: 1px; left: 1px;
+    filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.6));
+    z-index: 2;
 }
 
 .leaflet-popup { display: none !important; }
 
-/* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -612,17 +557,16 @@ body.dark-theme .task-success {
 
 <div id="map"></div>
 
-<!-- HEADER -->
 <header class="app-header">
     <div class="header-left">
         <div>
             <div class="header-logo">CHRONOS</div>
-            <div class="header-subtitle">Global Heritage Explorer</div>
+            <div class="header-subtitle">Globales Welterbe</div>
         </div>
     </div>
     <div class="header-right">
         <div class="xp-display">
-            <div class="xp-label">Progress</div>
+            <div class="xp-label">Fortschritt</div>
             <div class="xp-value" id="xp-points">0</div>
             <div class="xp-bar"><div id="xp-fill" class="xp-fill"></div></div>
         </div>
@@ -630,88 +574,79 @@ body.dark-theme .task-success {
     </div>
 </header>
 
-<!-- SIDEBAR -->
 <main class="main-container">
     <section class="story-sidebar">
 
-        <!-- WELCOME PANEL -->
         <div id="panel-welcome" class="panel-state active">
             <div class="welcome-header">
-                <div class="section-label">Explore Heritage</div>
-                <h2>World's Greatest Sites</h2>
-                <p class="lead-text">Discover UNESCO World Heritage sites and the Seven Wonders. Test your knowledge with three questions per location and earn progress points.</p>
+                <div class="section-label">Erkunde Welterbe</div>
+                <h2>Die wichtigsten Stätten der Welt</h2>
+                <p class="lead-text">Entdecke UNESCO-Welterbestätten und die Sieben Weltwunder. Teste dein Wissen mit drei Fragen pro Ort und sammle Punkte.</p>
             </div>
 
-            <!-- LEGEND -->
             <div class="legend-card">
-                <div class="legend-title">Legend</div>
+                <div class="legend-title">Legende</div>
                 <div class="legend-grid">
                     <div class="legend-item">
-                        <span style="font-size: 18px;">★</span>
-                        <span>Seven Wonders</span>
+                        <span style="font-size: 14px;">★</span>
+                        <span>Sieben Wunder</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-dot" style="background: #8B0000;"></div>
-                        <span>Ancient (2000+ y)</span>
+                        <span>Antike (&gt;2000 J.)</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-dot" style="background: #8B6914;"></div>
-                        <span>Medieval</span>
+                        <span>Mittelalter</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-dot" style="background: #2C5F2E;"></div>
-                        <span>Modern</span>
+                        <span>Neuzeit</span>
                     </div>
                 </div>
             </div>
 
-            <!-- FILTERS -->
             <div class="filter-group">
-                <div class="filter-label">Filter by Era</div>
+                <div class="filter-label">Nach Epoche filtern</div>
                 <div class="filter-chips">
-                    <button class="chip active" data-filter="all">All</button>
-                    <button class="chip" data-filter="ancient">Ancient</button>
-                    <button class="chip" data-filter="medieval">Medieval</button>
-                    <button class="chip" data-filter="modern">Modern</button>
-                    <button class="chip" data-filter="wonder">Wonders</button>
+                    <button class="chip active" data-filter="all">Alle</button>
+                    <button class="chip" data-filter="ancient">Antike</button>
+                    <button class="chip" data-filter="medieval">Mittelalter</button>
+                    <button class="chip" data-filter="modern">Neuzeit</button>
+                    <button class="chip" data-filter="wonder">Wunder</button>
                 </div>
             </div>
 
-            <!-- SORT -->
             <div class="filter-group" style="margin-bottom: 16px;">
                 <div class="sort-row">
-                    <span class="sort-label">Sort by</span>
-                    <button class="sort-btn active" data-sort="default">Default</button>
-                    <button class="sort-btn" data-sort="oldest">Oldest</button>
-                    <button class="sort-btn" data-sort="newest">Newest</button>
+                    <span class="sort-label">Sortieren nach</span>
+                    <button class="sort-btn active" data-sort="default">Standard</button>
+                    <button class="sort-btn" data-sort="oldest">Älteste</button>
+                    <button class="sort-btn" data-sort="newest">Neueste</button>
                     <button class="sort-btn" data-sort="name">A–Z</button>
                 </div>
             </div>
 
-            <!-- TABS: Explore / Favorites -->
             <div class="nav-tabs">
-                <button class="nav-tab active" data-view="explore">Explore</button>
-                <button class="nav-tab" data-view="favorites">Saved (<span id="fav-count">0</span>)</button>
+                <button class="nav-tab active" data-view="explore">Entdecken</button>
+                <button class="nav-tab" data-view="favorites">Gespeichert (<span id="fav-count">0</span>)</button>
             </div>
 
-            <!-- EXPLORE VIEW -->
             <div id="view-explore">
-                <div class="quick-selector-label">Sites & Wonders</div>
+                <div class="quick-selector-label">Stätten & Wunder</div>
                 <div id="quick-list-container"></div>
             </div>
 
-            <!-- FAVORITES VIEW -->
             <div id="view-favorites" style="display: none;">
                 <div class="favorites-section">
-                    <div class="quick-selector-label">Saved Sites</div>
+                    <div class="quick-selector-label">Meine Favoriten</div>
                     <div id="fav-list-container"></div>
                 </div>
             </div>
         </div>
 
-        <!-- DETAILS PANEL -->
         <div id="panel-details" class="panel-state">
-            <button class="back-btn" id="btn-close-details">Back</button>
+            <button class="back-btn" id="btn-close-details">Zurück</button>
 
             <div class="site-header">
                 <div class="site-badges">
@@ -725,15 +660,13 @@ body.dark-theme .task-success {
             <h2 class="site-title" id="site-title">–</h2>
             <div class="site-meta" id="site-meta">–</div>
 
-            <!-- GALLERY -->
             <div class="gallery-wrapper">
                 <div class="gallery-main"><img id="gallery-img-active" src="" alt=""></div>
                 <div class="gallery-thumbs" id="gallery-thumbs-container"></div>
             </div>
 
-            <!-- CONTENT TABS -->
             <div class="tabs-nav">
-                <button class="tab-trigger active" data-tab="tab-context">Overview</button>
+                <button class="tab-trigger active" data-tab="tab-context">Überblick</button>
                 <button class="tab-trigger" data-tab="tab-details">Details</button>
             </div>
 
@@ -745,39 +678,33 @@ body.dark-theme .task-success {
                 <div id="site-details-dynamic"></div>
             </div>
 
-            <!-- QUIZ SECTION -->
             <div id="quiz-container"></div>
 
-            <!-- TOUR BUTTON -->
             <div class="tour-section">
-                <button id="btn-start-tour" class="primary-btn">View Virtual Tour</button>
+                <button id="btn-start-tour" class="primary-btn">Virtuelle Tour ansehen</button>
             </div>
         </div>
 
     </section>
 </main>
 
-<!-- MAP CONTROLS -->
 <div class="map-controls">
-    <button id="btn-zoom-in" class="ctrl-btn" title="Zoom in">+</button>
-    <button id="btn-zoom-out" class="ctrl-btn" title="Zoom out">−</button>
+    <button id="btn-zoom-in" class="ctrl-btn" title="Vergrößern">+</button>
+    <button id="btn-zoom-out" class="ctrl-btn" title="Verkleinern">−</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 
-/* ===========================================================
-   HERITAGE DATA – UNESCO + 7 Wonders
-   =========================================================== */
-
 const HERITAGE_DATA = [
+    // 7 WONDERS
     {
         id: "colosseum-wonder",
         type: "wonder",
-        title: "Colosseum",
-        country: "Italy",
-        category: "Architectural Marvel",
-        epochDisplay: "Ancient Rome",
+        title: "Kolosseum",
+        country: "Italien",
+        category: "Architektur",
+        epochDisplay: "Antikes Rom",
         builtYear: 80,
         epoch: "ancient",
         unescoYear: 1980,
@@ -788,38 +715,38 @@ const HERITAGE_DATA = [
             "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1604580864964-0462f5d5b1a8?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Colosseum (Amphitheatrum Flavianum) stands as one of history's most iconic structures. Built between 72-80 AD under the Flavian emperors, this monumental amphitheater could accommodate 50,000 spectators. It is also a UNESCO World Heritage Site, designated in 1980.
+        overview: `Das Kolosseum (Amphitheatrum Flavianum) steht als eines der ikonischsten Bauwerke der Geschichte. Erbaut zwischen 72–80 n. Chr. unter den Flavischen Kaisern, konnte dieses monumentale Amphitheater 50.000 Zuschauer fassen. Es ist gleichzeitig UNESCO-Welterbe seit 1980.
 
-The structure represents the pinnacle of Roman engineering and architecture. Its innovative design, including the hypogeum (underground system of elevators, tunnels, and chambers), allowed for the seamless organization of gladiatorial combat and wild animal hunts.`,
-        details: `Construction and Materials: Built primarily from travertine limestone, Roman concrete, and tuff, the Colosseum required approximately 100,000 cubic meters of travertine. Its four stories feature different architectural orders—Doric, Ionic, and Corinthian.
+Die Struktur repräsentiert den Höhepunkt römischer Ingenieurskunst. Sein innovatives Design, einschließlich des Hypogäums (unterirdisches System aus Aufzügen, Tunneln und Kammern), ermöglichte die nahtlose Organisation von Gladiatorenkämpfen und Tierhetzen.`,
+        details: `Konstruktion und Materialien: Das Kolosseum wurde hauptsächlich aus Travertin-Kalkstein, römischem Beton und Tuff errichtet. Es benötigte etwa 100.000 Kubikmeter Travertin. Seine vier Geschosse zeigen die unterschiedlichen architektonischen Ordnungen – dorisch, ionisch und korinthisch.
 
-The Hypogeum: Beneath the arena floor lay an intricate two-story underground complex featuring 80 vertical shafts for lifting animals and performers, elaborate water systems for flooding the arena for naval battles, and extensive storage chambers.
+Das Hypogäum: Unter der Arenanfläche befand sich ein komplexes zweistöckiges unterirdisches System mit 80 vertikalen Schächten zum Heben von Tieren und Künstlern, ausgefeilten Wassersystemen für die Inszenierung von Seeschlachten und umfangreichen Lagerräumen.
 
-Capacity and Evacuation: The building was engineered for rapid evacuation through 80 arched vomitoria (exit passages), allowing the entire audience to exit in mere minutes during emergencies.
+Kapazität und Evakuierung: Das Gebäude war für schnelle Evakuierung durch 80 gewölbte Vomitorien (Ausgänge) konzipiert, die es ermöglichten, die gesamte Zuschauermenge in wenigen Minuten zu evakuieren.
 
-Gladiatorial Spectacles: The Colosseum hosted games throughout the year, including battles between gladiators, hunts of exotic animals from across the empire, and elaborate re-enactments of mythological scenes. Water-filled battles (naumachiae) demonstrated the arena's engineering sophistication.`,
+Gladiatorische Spektakel: Das Kolosseum war Austragungsort von Spielen das ganze Jahr über, mit Kämpfen zwischen Gladiatoren, Jagden exotischer Tiere aus dem Reich und aufwendigen Nachinszenierungen mythologischer Szenen.`,
         quiz: [
             {
-                question: "In what year was the Colosseum completed?",
-                options: ["72 AD", "80 AD", "100 AD"],
+                question: "In welchem Jahr wurde das Kolosseum fertiggestellt?",
+                options: ["72 n. Chr.", "80 n. Chr.", "100 n. Chr."],
                 correct: 1,
-                hint: "It was finished under the reign of Emperor Titus."
+                hint: "Es wurde unter Kaiser Titus vollendet."
             },
             {
-                question: "What was the primary purpose of the hypogeum?",
+                question: "Welcher war der primäre Zweck des Hypogäums?",
                 options: [
-                    "Storage for food supplies",
-                    "System of elevators and chambers for animals and performers",
-                    "Underground river for water management"
+                    "Lagerung von Lebensmitteln",
+                    "System von Aufzügen und Kammern für Tiere und Künstler",
+                    "Unterirdischer Fluss zur Wasserwirtschaft"
                 ],
                 correct: 1,
-                hint: "Think about how animals and gladiators were transported to the arena floor."
+                hint: "Denke daran, wie Tiere und Gladiatoren zur Arenanfläche transportiert wurden."
             },
             {
-                question: "Approximately how many spectators could the Colosseum hold?",
-                options: ["25,000", "50,000", "100,000"],
+                question: "Wie viele Zuschauer konnte das Kolosseum fassen?",
+                options: ["25.000", "50.000", "100.000"],
                 correct: 1,
-                hint: "It's written in the overview section."
+                hint: "Es steht in der Übersicht."
             }
         ],
         tourWaypoints: [
@@ -829,12 +756,12 @@ Gladiatorial Spectacles: The Colosseum hosted games throughout the year, includi
     },
 
     {
-        id: "pyramids-giza",
+        id: "pyramids",
         type: "heritage",
-        title: "Pyramids of Giza",
-        country: "Egypt",
-        category: "Ancient Monument",
-        epochDisplay: "Ancient Egypt",
+        title: "Pyramiden von Gizeh",
+        country: "Ägypten",
+        category: "Antikes Denkmal",
+        epochDisplay: "Antikes Ägypten",
         builtYear: -2560,
         epoch: "ancient",
         unescoYear: 1979,
@@ -844,36 +771,36 @@ Gladiatorial Spectacles: The Colosseum hosted games throughout the year, includi
             "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Great Pyramid of Giza remains the largest and most recognizable of the three pyramids on the Giza plateau. Constructed around 2560 BCE for Pharaoh Khufu, it stands as one of the Seven Wonders of the Ancient World and the only one still largely intact today.
+        overview: `Die Große Pyramide von Gizeh bleibt das größte und erkennbarste der drei Pyramiden auf dem Gizeh-Plateau. Um 2560 v. Chr. für Pharao Cheops errichtet, steht sie als eines der Sieben Wunder der antiken Welt – und das einzige, das noch weitgehend intakt ist.
 
-Built with approximately 2.3 million limestone blocks, each weighing between 2.5 to 70 tons, the pyramid originally stood 146.5 meters tall. Its construction required an estimated 20 years and the labor of thousands of skilled workers.`,
-        details: `Architectural Precision: The Great Pyramid's sides align with cardinal directions (north, south, east, west) with an accuracy of just 0.05 degrees. This astronomical alignment suggests sophisticated knowledge of mathematics and astronomy among ancient Egyptians.
+Erbaut mit etwa 2,3 Millionen Kalksteinblöcken, die jeweils zwischen 2,5 und 70 Tonnen wiegen, erreichte die Pyramide ursprünglich eine Höhe von 146,5 Metern. Ihre Konstruktion erforderte schätzungsweise 20 Jahre und die Arbeit tausender Handwerker.`,
+        details: `Architektonische Präzision: Die Seiten der Großen Pyramide orientieren sich an den Kardinalrichtungen mit einer Genauigkeit von nur 0,05 Grad. Diese astronomische Ausrichtung deutet auf sophistiziertes mathematisches und astronomisches Wissen der antiken Ägypter hin.
 
-The Pyramid's Composition: Composed of an inner core of larger blocks and an outer casing of smooth white Tura limestone, the exterior was originally polished to a mirror-like finish. Today, only fragments of the casing stones remain.
+Zusammensetzung: Die Pyramide besteht aus einem inneren Kern größerer Blöcke und einer äußeren Verkleidung aus glattem weißem Tura-Kalkstein. Das Äußere war ursprünglich poliert wie ein Spiegel. Heute sind nur noch Fragmente der Verkleidungssteine vorhanden.
 
-Internal Structure: The pyramid contains three burial chambers—the King's Chamber (containing a granite sarcophagus), the Queen's Chamber, and the Subterranean Chamber. These are connected by narrow passages and ventilation shafts of unknown purpose.
+Innere Struktur: Die Pyramide enthält drei Grabkammern – die Königskammer (mit Granitsarkophag), die Königinnenkammer und die unterirdische Kammer. Diese sind durch enge Gänge und Belüftungsschächte unbekannten Zwecks verbunden.
 
-Construction Methods: Scholars debate the precise construction technique, though evidence suggests the use of ramps, levers, and water-based lubrication for moving massive stone blocks. The absence of written records makes the exact methodology difficult to determine.
+Baumethoden: Gelehrte diskutieren über die exakte Bautechnik, doch Belege deuten auf die Verwendung von Rampen, Hebeln und wasserbasierten Schmiermitteln für den Transport massiver Steinblöcke hin.
 
-Longevity and Preservation: Despite earthquakes and limestone robbery over millennia, the Great Pyramid's solid core has remained largely intact, making it the longest-standing human-made structure on Earth.`,
+Langlebigkeit: Trotz Erdbeben und Kalksteinraub über Jahrtausende hat der feste Kern der Großen Pyramide sich erstaunlich gut erhalten, was sie zum am längsten stehenden Bauwerk der Menschheit macht.`,
         quiz: [
             {
-                question: "Approximately how many limestone blocks make up the Great Pyramid?",
-                options: ["1.2 million", "2.3 million", "3.5 million"],
+                question: "Aus wie vielen Kalksteinblöcken besteht die Große Pyramide ungefähr?",
+                options: ["1,2 Millionen", "2,3 Millionen", "3,5 Millionen"],
                 correct: 1,
-                hint: "The number is mentioned in the overview."
+                hint: "Die Zahl steht in der Übersicht."
             },
             {
-                question: "How precisely are the pyramid's sides aligned with cardinal directions?",
-                options: ["Within 0.5 degrees", "Within 0.05 degrees", "Within 2 degrees"],
+                question: "Wie präzise sind die Seiten der Pyramide nach den Kardinalrichtungen ausgerichtet?",
+                options: ["Innerhalb von 0,5 Grad", "Innerhalb von 0,05 Grad", "Innerhalb von 2 Grad"],
                 correct: 1,
-                hint: "Look in the Architectural Precision section."
+                hint: "Schau in den Abschnitt 'Architektonische Präzision'."
             },
             {
-                question: "Which chamber contains Khufu's sarcophagus?",
-                options: ["The Queen's Chamber", "The King's Chamber", "The Subterranean Chamber"],
+                question: "Welche Kammer enthält Chufus Sarkophag?",
+                options: ["Die Königinnenkammer", "Die Königskammer", "Die unterirdische Kammer"],
                 correct: 1,
-                hint: "Think about which chamber would be fit for a pharaoh."
+                hint: "Denke daran, welche Kammer für einen Pharao bestimmt wäre."
             }
         ],
         tourWaypoints: [
@@ -883,12 +810,12 @@ Longevity and Preservation: Despite earthquakes and limestone robbery over mille
     },
 
     {
-        id: "petra-wonder",
+        id: "petra",
         type: "wonder",
         title: "Petra",
-        country: "Jordan",
-        category: "Carved City",
-        epochDisplay: "Nabatean Kingdom",
+        country: "Jordanien",
+        category: "In Fels gehauene Stadt",
+        epochDisplay: "Nabatäisches Reich",
         builtYear: -300,
         epoch: "ancient",
         unescoYear: 1985,
@@ -899,38 +826,38 @@ Longevity and Preservation: Despite earthquakes and limestone robbery over mille
             "https://images.unsplash.com/photo-1579606038753-a7ee00c0f4f5?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1501233464357-1450c95840d7?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Petra, meaning "rock" in Greek, is an ancient city carved entirely from rose-red sandstone cliffs in southern Jordan. Established around 300 BCE by the Nabateans, it served as a crucial trading hub connecting Arabia, the Mediterranean, India, and China along the incense and spice routes.
+        overview: `Petra, das griechische Wort für „Felsen", ist eine antike Stadt, vollständig aus rotem Sandstein in Jordanien gehauen. Um 300 v. Chr. von den Nabatäern gegründet, war sie ein entscheidender Handelsknotenpunkt, der Arabien, das Mittelmeer, Indien und China über Gewürz- und Weihrauchrouten verband.
 
-The entire city—including temples, tombs, storage chambers, and a sophisticated water management system—was carved directly into the living rock face. Its most iconic feature, the Treasury (Al-Khazne), greets visitors as they emerge from the narrow Siq gorge.`,
-        details: `The Siq: The primary entrance to Petra is through the Siq, a narrow gorge carved by water and enlarged by human effort. In places, the canyon walls rise over 200 meters apart, and at the narrowest points, they are only 3 meters wide. Walking the 1.2-kilometer passage builds anticipation for the sudden reveal of the Treasury's 40-meter-high façade.
+Die gesamte Stadt – einschließlich Tempel, Gräber, Speicherkammern und eines sophistizierten Wassermanagementsystems – wurde direkt in den Felsen geschnitten. Sein ikonischstes Merkmal, das Schatzhaus (Al-Khazne), präsentiert sich, wenn Besucher die enge Siq-Schlucht verlassen.`,
+        details: `Der Siq: Der Haupteingang zu Petra führt durch eine enge von Wasser geschaffene und von Menschen erweiterte Schlucht. An den engsten Stellen sind die Canyonwände nur 3 Meter breit. Der 1,2-Kilometer lange Weg baut Spannung auf, bevor die plötzliche Enthüllung der 40 Meter hohen Fassade des Schatzhauses.
 
-Architectural Marvels: The facades combine Nabatean, Egyptian, and Hellenistic architectural styles. The Treasury's elaborate carved frieze features urns, scrolls, and sculptural figures, though their exact significance remains debated by historians.
+Architektonische Wunder: Die Fassaden kombinieren nabatäische, ägyptische und hellenistische Stile. Das aufwendig geschnitzte Ornament des Schatzhauses zeigt Urnen, Scrolls und Skulpturenfiguren, deren exakte Bedeutung Historiker noch debattieren.
 
-Water Management: Despite the arid desert location, Petra thrived due to an ingenious system of dams, cisterns, and channels that captured and preserved every drop of rainfall. This hydraulic engineering was critical to supporting a population of up to 30,000.
+Wassermanagement: Trotz der trockenen Wüstenlage florierte Petra durch ein ausgeklügeltes System von Dämmen, Zisternen und Kanälen, das jeden Regentropfen einfing und erhielt. Diese hydraulische Technik war kritisch für eine Bevölkerung von bis zu 30.000 Menschen.
 
-The Theater and Monastery: Beyond the Treasury lies a Roman-style theater capable of holding 8,500 spectators, and further into the mountains stands the Monastery (Al-Deir), an even larger carved structure that serves as a testament to Petra's enduring religious and cultural significance.`,
+Das Theater und das Kloster: Über den Schatz hinaus liegt ein römisch-stilisches Theater für 8.500 Zuschauer, und weiter in den Bergen das Kloster (Al-Deir), eine noch größere geschnitzte Struktur.`,
         quiz: [
             {
-                question: "What does 'Petra' mean in Greek?",
-                options: ["City", "Rock", "Desert"],
+                question: "Was bedeutet 'Petra' auf Griechisch?",
+                options: ["Stadt", "Felsen", "Wüste"],
                 correct: 1,
-                hint: "The word is defined in the overview."
+                hint: "Das Wort wird in der Übersicht definiert."
             },
             {
-                question: "What is the Siq?",
+                question: "Was ist der Siq?",
                 options: [
-                    "A water storage chamber",
-                    "A narrow gorge serving as the entrance",
-                    "A large tomb structure"
+                    "Eine Wasserspeicherkammer",
+                    "Eine enge Schlucht, die als Eingang dient",
+                    "Eine große Grabstruktur"
                 ],
                 correct: 1,
-                hint: "Read the section titled 'The Siq'."
+                hint: "Lies den Abschnitt 'Der Siq'."
             },
             {
-                question: "At its narrowest point, how wide is the Siq?",
-                options: ["10 meters", "5 meters", "3 meters"],
+                question: "Wie breit ist der Siq an seiner engsten Stelle?",
+                options: ["10 Meter", "5 Meter", "3 Meter"],
                 correct: 2,
-                hint: "The measurement is provided in the Siq section."
+                hint: "Das Maß ist im Siq-Abschnitt angegeben."
             }
         ],
         tourWaypoints: [
@@ -940,12 +867,12 @@ The Theater and Monastery: Beyond the Treasury lies a Roman-style theater capabl
     },
 
     {
-        id: "machu-picchu-wonder",
+        id: "machu-picchu",
         type: "wonder",
         title: "Machu Picchu",
         country: "Peru",
-        category: "Inca Citadel",
-        epochDisplay: "Inca Empire",
+        category: "Inka-Zitadel",
+        epochDisplay: "Inka-Reich",
         builtYear: 1450,
         epoch: "modern",
         unescoYear: 1983,
@@ -955,40 +882,38 @@ The Theater and Monastery: Beyond the Treasury lies a Roman-style theater capabl
             "https://images.unsplash.com/photo-1587595431973-160d0d94adb1?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Perched 2,430 meters above sea level on a mountain ridge in the Andes, Machu Picchu is an Inca citadel built around 1450 during the reign of Pachacutec. This "Lost City" remained hidden from the Spanish conquistadors and was only revealed to the outside world in 1911 by American historian Hiram Bingham.
+        overview: `Auf 2.430 Metern Höhe auf einem Bergkamm in den Anden thront Machu Picchu, eine Inka-Zitadel um 1450 unter Pachacutec erbaut. Diese „verlorene Stadt" blieb den spanischen Conquistadoren verborgen und wurde der Welt erst 1911 durch den amerikanischen Historiker Hiram Bingham offenbart.
 
-The site demonstrates extraordinary architectural achievement in an impossibly challenging location. Built without mortar, using precisely fitted stone blocks, Machu Picchu contains temples, residences, storage chambers, and sophisticated agricultural terraces.`,
-        details: `Ashlar Stonework: The Inca employed a technique called ashlar masonry, where granite blocks were cut with such precision that mortar was unnecessary. Stones fit so tightly that a knife blade cannot be inserted between them. This construction method provided both stability and flexibility—during earthquakes, the stones would move slightly and settle back into place without cracking.
+Der Ort zeigt außergewöhnliche architektonische Leistung an unmöglichem Ort. Ohne Mörtel erbaut mit präzise angepassten Steinblöcken, enthält Machu Picchu Tempel, Wohnungen, Lagerkammern und ausgefeilte landwirtschaftliche Terrassen.`,
+        details: `Ashlar-Steinwerk: Die Inka verwendeten eine Technik namens Ashlar-Verarbeitung, bei der Granitblöcke so präzise geschnitten wurden, dass Mörtel unnötig war. Steine passen so eng zusammen, dass keine Klinge dazwischen passt. Bei Erdbeben bewegen sich die Blöcke leicht und setzen sich exakt zurück.
 
-Agricultural Innovation: Over 700 agricultural terraces surround the city, carved into the mountainside to prevent erosion and landslides. These terraces served a dual purpose: food production and geotechnical stability, addressing the extreme rainfall and steep terrain.
+Agrarische Innovation: Über 700 landwirtschaftliche Terrassen umgeben die Stadt, in den Berg geschnitten zur Erosionsprävention. Sie dienten Nahrungsmittelproduktion und geotechnischer Stabilität.
 
-Urban Planning: The city is divided into distinct districts—a Royal District with the finest construction, the Sacred Plaza containing temples, and the Common District for laborers and commoners. This spatial organization reflects sophisticated urban planning and social structure.
+Städtische Planung: Die Stadt ist in unterschiedliche Distrikte unterteilt – ein Royaldistrikt mit bester Konstruktion, die Heilige Plaza mit Tempeln, und der Gemeindistrikt für Arbeiter.
 
-Astronomical Alignment: Key structures, including the Temple of the Sun and the Intihuatana stone (meaning "hitching post of the sun"), show precise astronomical alignments, suggesting the site held deep religious and calendrical significance.
-
-Discovery and Mystery: The abandonment of Machu Picchu around the time of the Spanish conquest remains unexplained. Theories range from disease epidemics to relocation of the population, but the city was systematically preserved, suggesting an intentional and orderly evacuation.`,
+Astronomische Ausrichtung: Schlüsselstrukturen, einschließlich des Sonnentempels und des Intihuatana-Steins (Bindestelle der Sonne), zeigen präzise astronomische Ausrichtungen.`,
         quiz: [
             {
-                question: "At what elevation is Machu Picchu located?",
-                options: ["1,850 meters", "2,430 meters", "3,200 meters"],
+                question: "In welcher Höhe liegt Machu Picchu?",
+                options: ["1.850 Meter", "2.430 Meter", "3.200 Meter"],
                 correct: 1,
-                hint: "The elevation is mentioned in the overview."
+                hint: "Die Höhe ist in der Übersicht erwähnt."
             },
             {
-                question: "Who is credited with revealing Machu Picchu to the world?",
+                question: "Wer entdeckte Machu Picchu für die Welt?",
                 options: ["Francisco Pizarro", "Hiram Bingham", "Garcilaso de la Vega"],
                 correct: 1,
-                hint: "The person's name appears in the overview section."
+                hint: "Der Name steht in der Übersicht."
             },
             {
-                question: "What is ashlar masonry?",
+                question: "Was ist Ashlar-Maurerwerk?",
                 options: [
-                    "The use of mortar between stones",
-                    "Precisely fitted stone blocks without mortar",
-                    "A decorative stone technique"
+                    "Verwendung von Mörtel zwischen Steinen",
+                    "Präzise angepasste Steine ohne Mörtel",
+                    "Eine dekorative Steintechnik"
                 ],
                 correct: 1,
-                hint: "The ashlar section explains this construction method."
+                hint: "Der Ashlar-Abschnitt erklärt diese Konstruktionsmethode."
             }
         ],
         tourWaypoints: [
@@ -998,12 +923,12 @@ Discovery and Mystery: The abandonment of Machu Picchu around the time of the Sp
     },
 
     {
-        id: "tajmahal-wonder",
+        id: "tajmahal",
         type: "wonder",
         title: "Taj Mahal",
-        country: "India",
+        country: "Indien",
         category: "Mausoleum",
-        epochDisplay: "Mughal Empire",
+        epochDisplay: "Mogul-Reich",
         builtYear: 1653,
         epoch: "modern",
         unescoYear: 1983,
@@ -1011,42 +936,40 @@ Discovery and Mystery: The abandonment of Machu Picchu around the time of the Sp
         zoom: 16,
         images: [
             "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1605743024159-55189a344e74?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Taj Mahal is a white marble mausoleum built between 1632 and 1653 by Mughal Emperor Shah Jahan in memory of his favorite wife, Mumtaz Mahal, who died during childbirth. Located in Agra, India, it represents the pinnacle of Mughal architecture and one of the world's greatest monuments to love.
+        overview: `Das Taj Mahal ist ein weißes Marmormausoleum, zwischen 1632–1653 von Mogul-Kaiser Shah Jahan zur Erinnerung an seine Lieblingsfrau Mumtaz Mahal erbaut, die bei der Geburt starb. Es repräsentiert den Höhepunkt der Mogul-Architektur und eines der größten Denkmäler der Liebe.
 
-The structure encompasses approximately 42 acres and includes the main mausoleum, a mosque, a guest house, and extensive gardens laid out in the classic Mughal style. Inlaid with semi-precious stones and decorated with exquisite calligraphy, it has become an iconic symbol of romance and beauty.`,
-        details: `Architectural Synthesis: The Taj Mahal seamlessly blends Persian, Islamic, and Indian architectural traditions. Its design reflects centuries of Mughal architectural evolution, incorporating elements such as the domed chamber, arched alcoves, and decorative gardens.
+Die Struktur umfasst etwa 42 Acres mit dem Hauptmausoleum, einer Moschee, einem Gästehaus und ausgedehnten Gärten im klassischen Mogul-Stil. Mit halbedelsteinen eingelegt und mit exquisiter Kalligrafie geschmückt, ist es ein ikonisches Symbol der Romantik.`,
+        details: `Architektonische Synthese: Das Taj Mahal verbindet nahtlos persische, islamische und indische Traditionen. Sein Design reflektiert Jahrhunderte mogulischer Evolution, mit Elementen wie der gewölbten Kammer und dekorativen Gärten.
 
-Materials and Ornamentation: The main structure is faced with white marble quarried from Makrana in Rajasthan, while the dome is made of white marble with a height of 35 meters. The entire building is inlaid with semi-precious stones—jade, crystal, turquoise, and lapis lazuli—arranged in intricate floral patterns. The Qur'anic verses inscribed around the doorways were written by a master calligrapher and are so precisely carved that they appear painted from a distance.
+Materialien und Verzierungen: Die Hauptstruktur ist mit weißem Marmor aus Makrana in Rajasthan verkleidet. Mit halbedelsteinen – Jade, Kristall, Türkis und Lapislazuli – eingelegt in aufwendigen floralen Mustern. Qur'an-Verse um Türrahmen sind so präzise geschnitzt, dass sie aus der Ferne gemalt aussehen.
 
-Foundation Engineering: Built on the banks of the Yamuna River, the structure rests on a complex foundation system including massive stone pilings and layers of rubble to prevent settling. This engineering feat ensures the building's stability despite the soft alluvial soil beneath it.
+Fundament-Ingenieurskunst: An den Ufern des Yamuna erbaut, ruht die Struktur auf komplexem Fundamentsystem mit massiven Steinpfählen und Schutt-Schichten zur Setzungsprävention.
 
-Symmetry and Proportion: The Taj Mahal achieves almost perfect symmetry along its central axis. The main chamber, four minarets, and surrounding structures follow precise mathematical proportions, creating a sense of balance and harmony that observers find emotionally moving.
-
-The Legend of Shah Jahan: According to legend, Shah Jahan planned to build a black marble mausoleum for himself on the opposite bank of the river—a mirror image of the Taj Mahal. Political turmoil prevented this, and Shah Jahan was imprisoned in the nearby Agra Fort, where he could gaze upon the Taj Mahal from his window.`,
+Symmetrie und Proportion: Das Taj Mahal erreicht fast perfekte Symmetrie entlang seiner Mittelachse. Hauptkammer, vier Minarette und Strukturen folgen präzisen mathematischen Proportionen.`,
         quiz: [
             {
-                question: "For whom did Shah Jahan build the Taj Mahal?",
-                options: ["His mother", "His favorite wife Mumtaz Mahal", "His daughter"],
+                question: "Für wen baute Shah Jahan das Taj Mahal?",
+                options: ["Seine Mutter", "Seine Lieblingsfrau Mumtaz Mahal", "Seine Tochter"],
                 correct: 1,
-                hint: "It's mentioned in the overview."
+                hint: "Es steht in der Übersicht."
             },
             {
-                question: "What semi-precious stones are inlaid in the Taj Mahal?",
+                question: "Welche halbedelsteine sind im Taj Mahal eingelegt?",
                 options: [
-                    "Diamonds and rubies only",
-                    "Jade, crystal, turquoise, and lapis lazuli",
-                    "Only marble and sandstone"
+                    "Nur Diamanten und Rubine",
+                    "Jade, Kristall, Türkis und Lapislazuli",
+                    "Nur Marmor und Sandstein"
                 ],
                 correct: 1,
-                hint: "Check the Materials and Ornamentation section."
+                hint: "Schau in 'Materialien und Verzierungen'."
             },
             {
-                question: "How long did the construction of the Taj Mahal take?",
-                options: ["10 years", "20 years", "21 years"],
+                question: "Wie lange dauerte die Konstruktion des Taj Mahal?",
+                options: ["10 Jahre", "20 Jahre", "21 Jahre"],
                 correct: 2,
-                hint: "The dates are given in the overview (1632-1653)."
+                hint: "Die Daten sind in der Übersicht (1632–1653)."
             }
         ],
         tourWaypoints: [
@@ -1057,10 +980,10 @@ The Legend of Shah Jahan: According to legend, Shah Jahan planned to build a bla
     {
         id: "christ-redeemer",
         type: "wonder",
-        title: "Christ the Redeemer",
-        country: "Brazil",
+        title: "Christus der Erlöser",
+        country: "Brasilien",
         category: "Statue",
-        epochDisplay: "Modern Monument",
+        epochDisplay: "Modernes Denkmal",
         builtYear: 1931,
         epoch: "modern",
         unescoYear: null,
@@ -1068,38 +991,36 @@ The Legend of Shah Jahan: According to legend, Shah Jahan planned to build a bla
         zoom: 16,
         images: [
             "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1548963670-7f9c28a9e002?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1605743024159-55189a344e74?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Standing 30 meters tall (38 meters including the base) atop the Corcovado mountain in Rio de Janeiro, the Christ the Redeemer statue was completed in 1931 as a symbol of Brazilian Christianity and national identity. This Art Deco masterpiece has become one of the most recognizable statues in the world and was named one of the Seven Wonders of the Modern World in 2007.
+        overview: `Auf dem Corcovado-Berg in Rio de Janeiro thronend, steht die Christus-Statue 30 Meter hoch (38 Meter mit Basis) und wurde 1931 fertiggestellt als Symbol des brasilianischen Christentums und der nationalen Identität. Dieses Art-Déco-Meisterwerk ist eine der erkennbarsten Statuen der Welt.
 
-The monument was constructed using reinforced concrete by Brazilian engineer Heitor da Silva Costa, with the face designed by French sculptor Paul Landowski. Carved from a single piece of soapstone, the statue weighs 635 tons and took nine years to build.`,
-        details: `Design and Construction: The statue's iconic pose—with arms outstretched measuring 28 meters wide—was inspired by the idea of embracing the city below. The Art Deco style was chosen for its geometric simplicity and modern aesthetic. Ironically, the statue's construction preceded the Art Deco movement's peak, making it a pioneer of the style.
+Das Monument wurde von brasilianischem Ingenieur Heitor da Silva Costa mit dem französischen Bildhauer Paul Landowski entworfen. Das Specksteingesicht wiegt 635 Tonnen und benötigte neun Jahre Bau.`,
+        details: `Design und Konstruktion: Die ikonische Pose mit 28 Meter breiten ausgestreckten Armen symbolisiert die Umarmung der Stadt darunter. Der Art-Déco-Stil wurde für geometrische Einfachheit gewählt. Das Bauwerk war Pionier des Stils, bevor dieser seinen Höhepunkt erreichte.
 
-Materials: The monument's surface is clad in white soapstone (steatite) imported from Sweden, chosen for its durability and weather resistance. The underlying structure is reinforced concrete, a relatively new material in the 1920s. The soapstone cladding has required periodic restoration due to weathering and lightning strikes.
+Materialien: Die Oberfläche ist mit weißem Speckstein (Steatit) aus Schweden verkleidet, ausgewählt für Haltbarkeit. Die zugrunde liegende Struktur ist Stahlbeton, ein Neuheits-Material der 1920er Jahre. Speckstein benötigte periodische Restaurierung.
 
-Lightning Protection: The statue experiences an average of six direct lightning strikes per year due to its elevated position. Multiple metal conductors running through the structure channel this electrical energy safely into the ground. Despite this, the outstretched arms and head have been damaged repeatedly and require regular restoration.
+Blitzschutz: Die Statue erleidet durchschnittlich sechs direkte Blitzschläge jährlich. Multiple Metallleiter leiten elektrische Energie sicher ab. Trotzdem wurden Arme und Kopf wiederholten beschädigt.
 
-Cultural Significance: For many Brazilians, the statue represents hope, faith, and national pride. It has been featured in countless films, photographs, and works of art. During periods of national difficulty or celebration, the monument is often illuminated in different colors as a form of symbolic communication.
-
-Access and Tourism: A narrow-gauge train transports approximately two million visitors annually to the summit. The viewing platform provides panoramic views of Rio de Janeiro and has become one of the world's most photographed locations.`,
+Kulturelle Bedeutung: Für viele Brasilianer repräsentiert die Statue Hoffnung, Glauben und nationalen Stolz. Sie ist vielfach in Filmen und Kunstwerken vorgestellt. Während nationaler Schwierigkeiten wird sie oft in verschiedenen Farben illuminiert.`,
         quiz: [
             {
-                question: "In what year was Christ the Redeemer completed?",
+                question: "In welchem Jahr wurde Christus der Erlöser fertiggestellt?",
                 options: ["1922", "1931", "1940"],
                 correct: 1,
-                hint: "The year is mentioned in the overview."
+                hint: "Das Jahr steht in der Übersicht."
             },
             {
-                question: "What is the statue primarily made of?",
-                options: ["White marble", "Bronze", "Soapstone (steatite)"],
+                question: "Aus welchem Material besteht die Statue hauptsächlich?",
+                options: ["Weißer Marmor", "Bronze", "Speckstein (Steatit)"],
                 correct: 2,
-                hint: "Check the Materials section."
+                hint: "Schau in 'Materialien'."
             },
             {
-                question: "How wide are the statue's outstretched arms?",
-                options: ["20 meters", "28 meters", "35 meters"],
+                question: "Wie breit sind die ausgestreckten Arme der Statue?",
+                options: ["20 Meter", "28 Meter", "35 Meter"],
                 correct: 1,
-                hint: "The width is specified in the Design section."
+                hint: "Die Breite wird in Design beschrieben."
             }
         ],
         tourWaypoints: [
@@ -1108,12 +1029,12 @@ Access and Tourism: A narrow-gauge train transports approximately two million vi
     },
 
     {
-        id: "great-wall-wonder",
+        id: "great-wall",
         type: "wonder",
-        title: "Great Wall of China",
+        title: "Chinesische Mauer",
         country: "China",
-        category: "Defensive Structure",
-        epochDisplay: "Various Dynasties",
+        category: "Verteidigungsstruktur",
+        epochDisplay: "Verschiedene Dynastien",
         builtYear: -221,
         epoch: "ancient",
         unescoYear: 1987,
@@ -1123,42 +1044,40 @@ Access and Tourism: A narrow-gauge train transports approximately two million vi
             "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1549893072-4bc678117f45?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Great Wall of China is the longest architectural structure in human history, stretching over 21,000 kilometers across northern China. Built over many centuries by various dynasties, beginning with the Qin Dynasty (221 BCE), the wall was designed to protect Chinese territories from invasions by nomadic groups from the north and to regulate trade along the Silk Road.
+        overview: `Die Chinesische Mauer ist das längste Architekturwerk in der Menschheitsgeschichte und erstreckt sich über 21.000 Kilometer über Nordchina. Über viele Jahrhunderte von verschiedenen Dynastien erbaut, beginnend mit der Qin-Dynastie (221 v. Chr.), sollte die Mauer chinesische Territorien vor Invasionen nomadischer Gruppen schützen und den Seidenstraßenhandel regulieren.
 
-The most recognizable sections were built during the Ming Dynasty (1368-1644 CE) and stand as testaments to the engineering prowess of ancient China. The wall's construction involved millions of workers and consumed vast quantities of brick, stone, and timber.`,
-        details: `Historical Development: The Great Wall was not built as a single, continuous project. Instead, over two millennia, various emperors and dynasties constructed different sections, often connecting and rebuilding earlier walls. The Qin Dynasty unified many smaller walls into a more cohesive defensive system. However, the Ming Dynasty was responsible for most of the wall visible today.
+Die erkennbarsten Abschnitte wurden während der Ming-Dynastie (1368–1644) erbaut und stehen als Zeugnis der Ingenieurskunst des antiken China.`,
+        details: `Historische Entwicklung: Die Mauer wurde nicht als einzelnes Projekt erbaut, sondern über zwei Jahrtausende von verschiedenen Kaisern und Dynastien in Abschnitten errichtet. Die Qin-Dynastie vereinigte viele kleinere Mauern. Allerdings war die Ming-Dynastie für die meisten heute sichtbaren Abschnitte verantwortlich.
 
-Construction Methods: The wall was built using locally sourced materials—stone in mountainous regions, brick and earth in plains. Builders employed sophisticated techniques including the use of sticky rice and limestone mortar to bind stones, creating remarkably durable structures that have withstood centuries of weather and seismic activity.
+Konstruktionsmethoden: Die Mauer wurde aus lokal beschafften Materialien gebaut – Stein in Gebirgsregionen, Ziegel und Erde in Ebenen. Bauleute nutzten Techniken wie klebrigen Reis und Kalksteinmörtel.
 
-Military Strategy: The wall served multiple defensive purposes: it slowed invading forces, allowed Chinese troops to concentrate their defenses at strategic points, and facilitated communication through a system of beacon fires. Watchtowers spaced at regular intervals provided surveillance and served as garrison points.
+Militärische Strategie: Die Mauer diente mehreren Verteidigungszwecken: Sie verlangsamte invasive Kräfte, ermöglichte konzentrierte Verteidigungspunkte und erleichterte Kommunikation durch Leuchtfeuer.
 
-Labor Force: Estimates suggest that millions of workers—soldiers, peasants, and prisoners—were involved in the wall's construction over the centuries. Many died during construction, and the wall has been described as "the longest cemetery on earth."
+Arbeitskraft: Millionen von Arbeitern – Soldaten, Bauern, Gefangene – waren über Jahrhunderte beim Mauerbau beteiligt. Viele starben während der Konstruktion.
 
-Economic and Trade Functions: Beyond military defense, the Great Wall regulated trade along the Silk Road. Fortified gates served as customs posts where goods were inspected and tariffs collected, making the wall an important economic instrument.
-
-Modern Misconception: The popular claim that the Great Wall is visible from space has been definitively debunked. Astronauts report that while the wall is impressive from aircraft at high altitude, it is far too narrow to be distinguished from orbital space without optical aids.`,
+Wirtschaftliche Funktionen: Über militärische Verteidigung hinaus regulierte die Mauer Seidenstraßenhandel. Befestigte Tore dienten als Zollposten.`,
         quiz: [
             {
-                question: "How long is the Great Wall of China?",
-                options: ["Over 5,000 kilometers", "Over 13,000 kilometers", "Over 21,000 kilometers"],
+                question: "Wie lang ist die Chinesische Mauer?",
+                options: ["Über 5.000 km", "Über 13.000 km", "Über 21.000 km"],
                 correct: 2,
-                hint: "The length is stated in the overview."
+                hint: "Die Länge steht in der Übersicht."
             },
             {
-                question: "Which dynasty constructed most of the wall visible today?",
-                options: ["Qin Dynasty", "Ming Dynasty", "Han Dynasty"],
+                question: "Welche Dynastie erbaute den Großteil der heute sichtbaren Mauer?",
+                options: ["Qin-Dynastie", "Ming-Dynastie", "Han-Dynastie"],
                 correct: 1,
-                hint: "Check the Historical Development section."
+                hint: "Schau in 'Historische Entwicklung'."
             },
             {
-                question: "What material was used as mortar in the Great Wall?",
+                question: "Welcher Mörtel wurde in der Chinesischen Mauer verwendet?",
                 options: [
-                    "Cement",
-                    "Sticky rice and limestone mortar",
-                    "Clay and water"
+                    "Zement",
+                    "Klebriger Reis und Kalksteinmörtel",
+                    "Ton und Wasser"
                 ],
                 correct: 1,
-                hint: "Read the Construction Methods section."
+                hint: "Lies 'Konstruktionsmethoden'."
             }
         ],
         tourWaypoints: [
@@ -1168,12 +1087,12 @@ Modern Misconception: The popular claim that the Great Wall is visible from spac
     },
 
     {
-        id: "chichen-itza-wonder",
+        id: "chichen-itza",
         type: "wonder",
         title: "Chichén Itzá",
-        country: "Mexico",
-        category: "Maya Ruins",
-        epochDisplay: "Classic to Post-Classic Maya",
+        country: "Mexiko",
+        category: "Maya-Ruinen",
+        epochDisplay: "Klassisches bis Post-Klassisches Maya",
         builtYear: 600,
         epoch: "medieval",
         unescoYear: 1988,
@@ -1183,44 +1102,42 @@ Modern Misconception: The popular claim that the Great Wall is visible from spac
             "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1554014248-049e8573d8d2?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Chichén Itzá was one of the largest urban centers of the ancient Maya civilization, flourishing between 600 and 1200 CE on Mexico's Yucatán Peninsula. The name means "mouth of the well of the Itzá" in Maya, referring to the site's two natural sinkholes (cenotes) that provided water in this arid region.
+        overview: `Chichén Itzá war eines der größten städtischen Zentren der antiken Maya-Zivilisation und florierte zwischen 600–1200 n. Chr. auf Mexikos Halbinsel Yucatán. Der Name bedeutet „Mund des Brunnens der Itzá" auf Maya und bezieht sich auf zwei natürliche Cenoten (Sinkholes), die dieser ariden Region Wasser lieferten.
 
-The city served as a major religious, political, and commercial center, drawing pilgrims and traders from across Mesoamerica. It represents a fascinating blend of Classic Maya and Toltec cultural influences.`,
-        details: `El Castillo (The Castle): The iconic pyramid known as El Castillo or the Temple of Kukulcán is the site's most famous structure. Standing 24 meters tall, the pyramid is an engineering marvel designed to function as a solar calendar. The pyramid has 365 steps—one for each day of the year. Twice annually, during the spring and autumn equinoxes, the setting sun casts a shadow that creates the illusion of a feathered serpent descending the pyramid's side, creating a dramatic visual effect that aligns with the Mayan calendar.
+Die Stadt diente als großes religiöses, politisches und kommerzielles Zentrum und zog Pilger und Händler aus ganz Mesoamerika an.`,
+        details: `El Castillo: Die ikonische Pyramide El Castillo oder der Tempel des Kukulcán ist das bekannteste Bauwerk. Mit 24 Metern Höhe ist es ein Ingenieursmeisterwerk, das als Sonnenkalender funktioniert. Die Pyramide hat 365 Stufen – eine pro Jahrestag. Zweimal jährlich während Äquinoktien wirft der Sonnenuntergang einen Schatten, der die Illusion einer gefiederten Schlange schafft.
 
-The Great Ball Court: Chichén Itzá features the largest ball court in Mesoamerica, measuring 168 by 70 meters. The exact rules and scoring system of the Maya ball game remain debated, but it appears to have held significant religious and ceremonial importance. The court's acoustics are remarkable—a whisper at one end can be clearly heard at the other.
+Der Große Ballplatz: Chichén Itzá hat den größten Ballplatz Mesoamerikas mit 168 mal 70 Metern. Die genauen Regeln des Maya-Ballspiels bleiben debattiert, aber es hatte offenbar große religiöse Bedeutung.
 
-Sacred Cenotes: The two cenotes (natural sinkholes) were central to Maya religious practice. The northern cenote was used for rituals and sacrifices, while the smaller southern cenote served domestic purposes. Archaeological dredging of the northern cenote has yielded numerous artifacts, including jade ornaments, copper bells, and pottery.
+Heilige Cenoten: Die zwei Cenoten waren zentral für Maya-religiöse Praxis. Der nördliche Cenote wurde für Rituale und Opferungen genutzt. Archäologische Dredgungen haben zahlreiche Artefakte gefunden.
 
-Astronomical Precision: Multiple structures at Chichén Itzá demonstrate sophisticated astronomical knowledge. The Caracol (an observatory with a spiral staircase) has windows aligned with specific celestial events. The Plataforma de las Águilas y Jaguares features carvings related to celestial observations.
-
-Toltec Influences: The presence of Toltec architectural elements, particularly evident in the Temple of Warriors with its distinctive Atlantean figures (columns carved as warriors), suggests cultural exchange and possibly military conquest or peaceful integration of Toltec peoples.`,
+Astronomische Präzision: Mehrere Strukturen zeigen sophistische astronomische Kenntnisse. Die Caracol (Observatorium mit Spiraltreppe) hat Fenster, die mit spezifischen Himmelsereignissen ausgerichtet sind.`,
         quiz: [
             {
-                question: "What does 'Chichén Itzá' mean?",
+                question: "Was bedeutet 'Chichén Itzá'?",
                 options: [
-                    "Great serpent temple",
-                    "Mouth of the well of the Itzá",
-                    "City of feathered serpent"
+                    "Großer Schlangentempel",
+                    "Mund des Brunnens der Itzá",
+                    "Stadt der gefiederten Schlange"
                 ],
                 correct: 1,
-                hint: "The meaning is provided in the overview."
+                hint: "Die Bedeutung ist in der Übersicht gegeben."
             },
             {
-                question: "How many steps does El Castillo have?",
+                question: "Wie viele Stufen hat El Castillo?",
                 options: ["313", "365", "400"],
                 correct: 1,
-                hint: "Look in the El Castillo section—it's related to the calendar."
+                hint: "Schau in El Castillo – es bezieht sich auf den Kalender."
             },
             {
-                question: "What phenomenon occurs at the spring and autumn equinoxes?",
+                question: "Welches Phänomen tritt an Äquinoktien auf?",
                 options: [
-                    "The entire pyramid illuminates",
-                    "A shadow creates the illusion of a feathered serpent",
-                    "Water emerges from the cenote"
+                    "Die gesamte Pyramide wird illuminiert",
+                    "Ein Schatten schafft die Illusion einer gefiederten Schlange",
+                    "Wasser tritt aus dem Cenote aus"
                 ],
                 correct: 1,
-                hint: "The effect is described in the El Castillo section."
+                hint: "Das Phänomen ist in El Castillo beschrieben."
             }
         ],
         tourWaypoints: [
@@ -1229,71 +1146,14 @@ Toltec Influences: The presence of Toltec architectural elements, particularly e
         ]
     },
 
-    {
-        id: "kyoto",
-        type: "heritage",
-        title: "Historic Kyoto",
-        country: "Japan",
-        category: "Imperial Capital",
-        epochDisplay: "Heian to Edo Period",
-        builtYear: 794,
-        epoch: "medieval",
-        unescoYear: 1994,
-        coordinates: [34.9948, 135.7850],
-        zoom: 14,
-        images: [
-            "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1583400470628-3abb0a4c5194?auto=format&fit=crop&w=800&q=80"
-        ],
-        overview: `Kyoto served as the capital of Japan for over 1,000 years, from 794 until 1868 when the imperial court moved to Tokyo. The city remains home to 17 UNESCO World Heritage temples and shrines, representing the pinnacle of Japanese architecture, garden design, and artistic tradition.
-
-The historic city preserves countless traditional wooden machiya houses, immaculate gardens, and ancient temples that collectively embody the aesthetic and spiritual values of Japanese culture across multiple historical periods.`,
-        details: `Architectural Heritage: Kyoto's temples showcase distinct architectural styles corresponding to different historical periods. Kiyomizu-dera (founded 778) features traditional Edo period architecture with a celebrated wooden platform. Fushimi Inari Taisha is famous for thousands of vermillion torii gates winding up a mountainside. The Golden Pavilion (Kinkaku-ji) and Silver Pavilion (Ginkaku-ji) exemplify Zen Buddhist aesthetics and garden design.
-
-Nightingale Floors: The Nijo Castle, built in 1603 as the Kyoto residence of the Tokugawa shogun, features an ingenious architectural innovation: nightingale floors. These wooden floors are constructed with specially fitted boards that produce a characteristic high-pitched chirping or squeaking sound when walked upon—an unintentional but highly effective burglar alarm that alerted inhabitants to the presence of intruders.
-
-Garden Design: Kyoto's gardens represent centuries of accumulated horticultural wisdom. The dry rock gardens (karesansui) of temples like Ryoan-ji use rocks, sand, and carefully pruned vegetation to suggest landscape elements. The extensive gardens of the Imperial Palace and numerous temples demonstrate sophisticated principles of composition, seasonal change, and aesthetic harmony.
-
-Traditional Arts: Kyoto remains the center of traditional Japanese arts, including kabuki theater, geisha culture, and traditional crafts. The Gion district preserves a historic geisha quarter with traditional wooden teahouses. Several kabuki theaters continue performances of classical plays that have been staged for centuries.
-
-Festival Traditions: Kyoto hosts numerous traditional festivals throughout the year. The Gion Matsuri, held in July, is one of Japan's most famous festivals, featuring processions of elaborate floats decorated with precious artifacts and textiles.`,
-        quiz: [
-            {
-                question: "How long was Kyoto the capital of Japan?",
-                options: ["500 years", "Over 1,000 years", "300 years"],
-                correct: 1,
-                hint: "The timeframe is mentioned in the overview."
-            },
-            {
-                question: "What is the purpose of nightingale floors?",
-                options: [
-                    "To prevent earthquakes",
-                    "To produce music",
-                    "To alert inhabitants of intruders"
-                ],
-                correct: 2,
-                hint: "Read the Nightingale Floors section."
-            },
-            {
-                question: "How many UNESCO World Heritage temples and shrines are in Kyoto?",
-                options: ["12", "15", "17"],
-                correct: 2,
-                hint: "The number is stated in the overview."
-            }
-        ],
-        tourWaypoints: [
-            { coords: [34.9948, 135.7850], zoom: 16 },
-            { coords: [35.0394, 135.7292], zoom: 17 }
-        ]
-    },
-
+    // UNESCO-ONLY SITES
     {
         id: "angkor-wat",
         type: "heritage",
         title: "Angkor Wat",
-        country: "Cambodia",
-        category: "Temple Complex",
-        epochDisplay: "Khmer Empire",
+        country: "Kambodscha",
+        category: "Tempelkomplex",
+        epochDisplay: "Khmer-Reich",
         builtYear: 1113,
         epoch: "medieval",
         unescoYear: 1992,
@@ -1303,40 +1163,40 @@ Festival Traditions: Kyoto hosts numerous traditional festivals throughout the y
             "https://images.unsplash.com/photo-1569163139394-de4798aa62b3?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Angkor Wat is the largest religious monument in the world, originally constructed as a Hindu temple dedicated to the god Vishnu in the early 12th century under Khmer King Suryavarman II. Covering 1,626 square kilometers, the temple complex represents the zenith of Khmer architectural and artistic achievement.
+        overview: `Angkor Wat ist das größte Religionsmonument der Welt, ursprünglich als Hindu-Tempel dem Gott Vishnu gewidmet im frühen 12. Jahrhundert unter Khmer-König Suryavarman II. Mit 1.626 Quadratkilometern repräsentiert der Tempelkomplex den Höhepunkt der Khmer-Architektur und künstlerischen Leistung.
 
-Over time, Angkor Wat transitioned from Hindu to Buddhist worship, and today it remains Cambodia's most important cultural symbol and an iconic representation of Southeast Asian heritage. The temple was built without mortar, using precisely fitted sandstone blocks.`,
-        details: `Architectural Layout: Angkor Wat is designed as a microcosm of the Hindu universe, with the central quincunx of towers representing Mount Meru (the center of the universe in Hindu cosmology). The temple is surrounded by a moat representing the ocean, with causeway entrances at cardinal points. The structure rises through three concentric galleries to the central sanctuary tower, which once stood over 65 meters tall.
+Im Laufe der Zeit wechselte Angkor Wat vom Hindu- zum Buddhismus-Ritual, und heute bleibt es Kambodschas wichtigster Kultursymbol und eine ikonische Darstellung des südostasiatischen Erbes. Der Tempel wurde ohne Mörtel aus präzise angepassten Sandsteinblöcken erbaut.`,
+        details: `Architektonisches Layout: Angkor Wat wurde als Mikrokosmos des Hindu-Universums konzipiert, mit der zentralen Gruppe von Türmen, die den Berg Meru (Mittelpunkt des Universums) repräsentiert. Der Tempel ist von einem Wassergraben umgeben, mit Zugängen an Kardinalrichtungen.
 
-Construction Scale: The temple required an estimated 300,000 workers over 30 years to complete. The precision of construction is remarkable—stone blocks are fitted so tightly that mortar was unnecessary. Some estimates suggest the total weight of sandstone used exceeds 10 million tons.
+Bauskala: Der Tempel benötigte schätzungsweise 300.000 Arbeiter über 30 Jahre. Die Präzision der Konstruktion ist bemerkenswert – Steinblöcke passen so eng zusammen, dass Mörtel unnötig war.
 
-Bas-Reliefs: The walls of the lower galleries are covered with over 1,200 square meters of intricately carved bas-reliefs depicting scenes from Hindu epics, particularly the Mahabharata and Ramayana. These narratives served both religious and historical purposes, recording the glory of the Khmer Empire and instructing visitors in Hindu philosophy.
+Bas-Reliefs: Die Wände der unteren Galerien sind mit über 1.200 Quadratmetern von aufwendig geschnitzten Bas-Reliefs bedeckt, die Szenen aus Hindu-Epen darstellen und die Khmer-Zivilisation glorifizieren.
 
-Artistic Innovations: Angkor Wat exemplifies Khmer classical style, characterized by balanced proportions, intricate ornamentation, and sophisticated sculptural work. The apsara (celestial dancing figures) carvings are particularly renowned for their graceful poses and detailed execution. Over 2,000 apsara figures are carved throughout the temple.
+Künstlerische Innovationen: Angkor Wat exemplifiziert Khmer klassischen Stil mit ausgedehnter Ornamentik. Die Apsara (himmlische Tänzerinnen)-Schnitzereien sind für graziöse Posen bekannt. Über 2.000 Apsara-Figuren sind durchgehend geschnitzt.
 
-Hydraulic Engineering: The wider Angkor complex featured an advanced water management system with barays (reservoirs) and canals that supported agricultural production and prevented flooding. This hydraulic infrastructure allowed the Khmer civilization to support a population of nearly a million people.`,
+Hydraulische Ingenieurskunst: Der erweiterte Angkor-Komplex bot fortgeschrittenes Wassermanagementsystem mit Reservoiren und Kanälen, das Agrarproduktion unterstützte und eine Bevölkerung von fast einer Million Menschen trug.`,
         quiz: [
             {
-                question: "To which Hindu god was Angkor Wat originally dedicated?",
+                question: "Welchem Hindu-Gott war Angkor Wat ursprünglich gewidmet?",
                 options: ["Shiva", "Brahma", "Vishnu"],
                 correct: 2,
-                hint: "The deity is mentioned in the overview."
+                hint: "Die Gottheit ist in der Übersicht erwähnt."
             },
             {
-                question: "Approximately how many apsara (dancing figure) sculptures are in Angkor Wat?",
-                options: ["500", "1,000", "2,000"],
+                question: "Wie viele Apsara-(Tänzerin)-Skulpturen sind in Angkor Wat?",
+                options: ["500", "1.000", "2.000"],
                 correct: 2,
-                hint: "Check the Artistic Innovations section."
+                hint: "Schau 'Künstlerische Innovationen'."
             },
             {
-                question: "What does the central tower represent in the Hindu cosmological design?",
+                question: "Was repräsentiert der zentrale Turm im Design?",
                 options: [
-                    "A fortress",
-                    "Mount Meru (center of the universe)",
-                    "A royal residence"
+                    "Eine Festung",
+                    "Berg Meru (Mittelpunkt des Universums)",
+                    "Eine königliche Residenz"
                 ],
                 correct: 1,
-                hint: "Read the Architectural Layout section."
+                hint: "Lies 'Architektonisches Layout'."
             }
         ],
         tourWaypoints: [
@@ -1346,63 +1206,60 @@ Hydraulic Engineering: The wider Angkor complex featured an advanced water manag
     },
 
     {
-        id: "statue-liberty",
+        id: "kyoto",
         type: "heritage",
-        title: "Statue of Liberty",
-        country: "United States",
-        category: "Monument",
-        epochDisplay: "19th Century",
-        builtYear: 1886,
-        epoch: "modern",
-        unescoYear: 1984,
-        coordinates: [40.6892, -74.0445],
-        zoom: 16,
+        title: "Historisches Kyoto",
+        country: "Japan",
+        category: "Kaiserliche Hauptstadt",
+        epochDisplay: "Heian- bis Edo-Periode",
+        builtYear: 794,
+        epoch: "medieval",
+        unescoYear: 1994,
+        coordinates: [34.9948, 135.7850],
+        zoom: 14,
         images: [
-            "https://images.unsplash.com/photo-1498855926480-d98e83099315?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1487495307983-2d71a8b6e5ca?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1583400470628-3abb0a4c5194?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Statue of Liberty was a gift from France to the United States, dedicated in 1886 as a symbol of liberty and democracy. Designed by French sculptor Frédéric Auguste Bartholdi, the 93-meter-tall (305 feet) copper monument stands on Liberty Island in New York Harbor and has become one of the world's most iconic symbols of freedom.
+        overview: `Kyoto war über 1.000 Jahre die Hauptstadt Japans, von 794 bis 1868, als der Kaiserliche Hof nach Tokio zog. Die Stadt beherbergt 17 UNESCO-Welterbe-Tempel und Schreine, die den Höhepunkt der japanischen Architektur, Gartengestaltung und künstlerischen Tradition repräsentieren.
 
-Dedicated on October 28, 1886, by President Grover Cleveland, the statue has welcomed millions of immigrants arriving in America. The inscription on the pedestal reads: "Give me your tired, your poor, your huddled masses yearning to breathe free."`,
-        details: `Design and Engineering: The statue's internal iron framework was designed by none other than Gustave Eiffel (who later designed the Eiffel Tower). The framework consists of an iron pylon and secondary skeletal framework that allows the copper sheets to move slightly with wind and temperature changes. This flexibility has proven essential to the structure's longevity.
+Die historische Stadt erhält unzählige traditionelle hölzerne Machiya-Häuser, makellose Gärten und antike Tempel, die gemeinsam die ästhetischen und geistigen Werte der japanischen Kultur über mehrere historische Perioden verkörpern.`,
+        details: `Architektonisches Erbe: Kyotos Tempel zeigen unterschiedliche Stile verschiedener historischer Perioden. Kiyomizu-dera (gegründet 778) zeigt traditionelle Edo-Periode-Architektur. Fushimi Inari Taisha ist berühmt für Tausende von Vermillion-Torii-Toren. Der Goldene Pavillon und Silberne Pavillon exemplifizieren Zen-Ästhetik.
 
-Symbolism: Lady Liberty holds a torch raised high in her right hand, representing enlightenment and hope. In her left hand, she holds a tablet inscribed with the date of American independence (July 4, 1776). A broken chain lies at her feet, symbolizing liberation from oppression and slavery.
+Nachtigallböden: Das Nijo-Schloss zeigt eine raffinierte architektonische Innovation: Nachtigallböden. Diese Holzböden sind speziell gebaut, um charakteristische hohe Geräusche zu produzieren – eine unbeabsichtigte aber hocheffektive Burgalarmanlage.
 
-The Crown: The statue's crown features seven points, traditionally interpreted as representing the seven continents or seven seas. The crown contains 25 windows, allowing visitors to observe the harbor and city from within the monument itself. Originally, the crown was intended to house a lighthouse.
+Gartengestaltung: Kyotos Gärten repräsentieren angesammeltes Gartenwissen. Trockene Felsgärten (Karesansui) nutzen Felsen, Sand und beschnittene Vegetation, um Landschaftselemente zu suggerieren.
 
-Copper Exterior: The statue's striking blue-green patina is copper oxide that formed over decades as the copper exterior oxidized. The original copper was bright reddish-brown but gradually developed this iconic greenish hue. A major restoration in 1986 replaced corroded internal ironwork and strengthened the torch-bearing arm.
+Traditionelle Künste: Kyoto bleibt Zentrum traditioneller japanischer Künste, einschließlich Kabuki-Theater und Geisha-Kultur. Der Gion-Distrikt erhält ein historisches Geisha-Viertel. Mehrere Kabuki-Theater führen klassische Stücke auf.
 
-Pedestal and Base: The statue rests on a granite and concrete pedestal designed by American architect Richard Morris Hunt. Within the pedestal, a museum chronicles the statue's history and the immigration experience. The complex serves as a portal to Ellis Island, historically the entry point for millions of immigrants.`,
+Festival-Traditionen: Kyoto hostet zahlreiche traditionelle Feste. Das Gion Matsuri im Juli ist eines der berühmtesten Japans mit Prozessionen von aufwendigen Floats.`,
         quiz: [
             {
-                question: "In what year was the Statue of Liberty dedicated?",
-                options: ["1876", "1884", "1886"],
+                question: "Wie lange war Kyoto Hauptstadt Japans?",
+                options: ["500 Jahre", "Über 1.000 Jahre", "300 Jahre"],
+                correct: 1,
+                hint: "Der Zeitraum ist in der Übersicht genannt."
+            },
+            {
+                question: "Was ist der Zweck der Nachtigallböden?",
+                options: [
+                    "Erdbebenprävention",
+                    "Musikproduktion",
+                    "Um Eindringlinge zu warnen"
+                ],
                 correct: 2,
-                hint: "The year is mentioned in the overview."
+                hint: "Lies 'Nachtigallböden'."
             },
             {
-                question: "Who designed the statue's internal iron framework?",
-                options: [
-                    "Richard Morris Hunt",
-                    "Gustave Eiffel",
-                    "Thomas Edison"
-                ],
-                correct: 1,
-                hint: "Read the Design and Engineering section."
-            },
-            {
-                question: "What does the broken chain at the statue's feet symbolize?",
-                options: [
-                    "America's industrial strength",
-                    "Liberation from oppression and slavery",
-                    "The strength of the nation"
-                ],
-                correct: 1,
-                hint: "Check the Symbolism section."
+                question: "Wie viele UNESCO-Welterbe-Tempel sind in Kyoto?",
+                options: ["12", "15", "17"],
+                correct: 2,
+                hint: "Die Zahl ist in der Übersicht genannt."
             }
         ],
         tourWaypoints: [
-            { coords: [40.6892, -74.0445], zoom: 17 }
+            { coords: [34.9948, 135.7850], zoom: 16 },
+            { coords: [35.0394, 135.7292], zoom: 17 }
         ]
     },
 
@@ -1410,9 +1267,9 @@ Pedestal and Base: The statue rests on a granite and concrete pedestal designed 
         id: "alhambra",
         type: "heritage",
         title: "Alhambra",
-        country: "Spain",
-        category: "Palace Complex",
-        epochDisplay: "Islamic Spain",
+        country: "Spanien",
+        category: "Palastkomplex",
+        epochDisplay: "Islamisches Spanien",
         builtYear: 1248,
         epoch: "medieval",
         unescoYear: 1984,
@@ -1422,72 +1279,183 @@ Pedestal and Base: The statue rests on a granite and concrete pedestal designed 
             "https://images.unsplash.com/photo-1548013146-b6a63d6ffd1c?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1600585152915-d3400ca199a8?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `The Alhambra is a fortified palace complex located in Granada, Spain, built during the Islamic Nasrid Dynasty in the 13th-14th centuries. The name derives from the Arabic "al-qal'ah al-hamra," meaning "the red fortress," referring to the reddish clay bricks used in its construction.
+        overview: `Die Alhambra ist ein befestigter Palastkomplex in Granada, Spanien, erbaut während der islamischen Nasriden-Dynastie im 13.–14. Jahrhundert. Der Name stammt vom arabischen „al-qal'ah al-hamra", bedeutet „die rote Festung", bezogen auf die roten Lehmziegel.
 
-This masterpiece of Islamic architecture represents the pinnacle of Andalusian Islamic art and culture. The complex includes the royal palaces, administrative buildings, mosques, baths, residential quarters, and fortification walls. Its exquisite decoration and sophisticated spatial design influenced European architecture and design for centuries.`,
-        details: `Architectural Sections: The Alcazaba is the oldest section, a fortress with towers and defensive walls overlooking Granada. The Nasrid Palaces contain the most intimate and artistically refined spaces, including the Court of Lions and the Court of Myrtles. The Generalife, a separate pleasure palace, features extensive gardens with fountains and water features designed as an earthly paradise in Islamic tradition.
+Dieses Meisterwerk islamischer Architektur repräsentiert den Höhepunkt der andalusischen islamischen Kunst und Kultur. Der Komplex besteht aus Königlichen Palästen, Verwaltungsgebäuden, Moscheen, Bädern, Wohnquartieren und Befestigungsmauern.`,
+        details: `Architektonische Sektionen: Die Alcazaba ist der älteste Abschnitt, eine Festung mit Türmen und Mauern. Die Nasriden-Paläste enthalten die intimsten und künstlerisch verfeinertsten Räume, einschließlich des Löwenplatzes und des Myrten-Platzes. Die Generalife ist ein separates Lustschloss mit ausgedehnten Gärten.
 
-Decorative Elements: The Alhambra's interior surfaces display extraordinary decoration, including intricate carved stucco, glazed ceramic tilework, and elaborate wooden ceiling panels. The walls feature repeating geometric and calligraphic patterns, including extensive Arabic inscriptions including poems, religious texts, and historical records. The famous motto "There is no conqueror but God" appears repeatedly throughout the palaces.
+Dekorative Elemente: Die Alhambra zeigt außergewöhnliche Dekoration mit aufwendig geschnitztem Stuck, glasierter Keramik und aufwendigen Holzdecken-Feldern. Wände zeigen wiederholte geometrische und kalligrafische Muster, einschließlich ausgedehnter arabischer Inschriften.
 
-Water Features: Water is integrated throughout the complex as both functional and aesthetic element. The Court of Lions features a central fountain with 12 marble lion sculptures. Channels carry water through gardens and courtyards, providing cooling and creating the sound of flowing water central to Islamic garden design.
+Wasserflächen: Wasser ist durchgängig integriert als funktionales und ästhetisches Element. Der Löwenplatz hat einen zentralen Brunnen mit 12 Marmor-Löwenskulpturen.
 
-The Court of Lions: This iconic space is surrounded by arcades supported by 124 delicate marble columns. The fountain at the center rests on a marble basin supported by 12 lion sculptures. The arches feature elaborate muqarnas (honeycomb) vaulting—a complex three-dimensional geometric pattern created through interlocking components without mortar.
+Der Löwenhof: Dieser ikonische Raum ist von 124 zarten Marmorsäulen umgeben. Der zentrale Brunnen ruht auf einem Marmorbecken von 12 Löwenskulpturen gestützt. Bögen zeigen aufwendige Muqarnas (Wabenmuster)-Wölbung.
 
-Preservation Challenges: The Alhambra faced significant deterioration through the 19th century due to neglect and alterations. Restoration efforts beginning in the late 19th century have carefully preserved the original decorative schemes while adapting the complex for modern use as a museum and cultural site.`,
+Erhaltungschallengen: Die Alhambra litten unter Vernachlässigung im 19. Jahrhundert. Restaurierungen seit dem späten 19. Jahrhundert haben die originalen dekorativen Schemata vorsichtig bewahrt.`,
         quiz: [
             {
-                question: "What does 'Alhambra' mean in Arabic?",
+                question: "Was bedeutet 'Alhambra' auf Arabisch?",
                 options: [
-                    "Palace of the sultan",
-                    "The red fortress",
-                    "Court of lions"
+                    "Palast des Sultans",
+                    "Die rote Festung",
+                    "Hof der Löwen"
                 ],
                 correct: 1,
-                hint: "The meaning is explained in the overview."
+                hint: "Die Bedeutung wird in der Übersicht erklärt."
             },
             {
-                question: "How many marble lion sculptures support the fountain in the Court of Lions?",
+                question: "Wie viele Marmor-Löwenskulpturen stützen den Brunnen?",
                 options: ["8", "12", "16"],
                 correct: 1,
-                hint: "The number is mentioned in The Court of Lions section."
+                hint: "Die Zahl ist im Löwenhof-Abschnitt genannt."
             },
             {
-                question: "What are muqarnas?",
+                question: "Was sind Muqarnas?",
                 options: [
-                    "Glazed tiles",
-                    "Honeycomb-like geometric vaulting patterns",
-                    "Water channels"
+                    "Glasierte Zierkacheln",
+                    "Wabenähnliche geometrische Wölbungsmuster",
+                    "Wassertragungssysteme"
                 ],
                 correct: 1,
-                hint: "Read the Court of Lions section."
+                hint: "Lies den Löwenhof-Abschnitt."
             }
         ],
         tourWaypoints: [
             { coords: [37.1759, -3.5881], zoom: 16 },
             { coords: [37.1770, -3.5900], zoom: 15 }
         ]
+    },
+
+    {
+        id: "statue-liberty",
+        type: "heritage",
+        title: "Freiheitsstatue",
+        country: "Vereinigte Staaten",
+        category: "Denkmal",
+        epochDisplay: "19. Jahrhundert",
+        builtYear: 1886,
+        epoch: "modern",
+        unescoYear: 1984,
+        coordinates: [40.6892, -74.0445],
+        zoom: 16,
+        images: [
+            "https://images.unsplash.com/photo-1495955484749-352ce9b7a72a?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1485872999829-c673f5194813?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Die Freiheitsstatue war ein Geschenk von Frankreich an die Vereinigten Staaten und wurde 1886 als Symbol der Freiheit und Demokratie eingeweiht. Entworfen vom französischen Bildhauer Frédéric Auguste Bartholdi, steht die 93-Meter-hohe Kupfer-Statue auf Liberty Island in New York Harbor und ist eines der Welt-Symbole der Freiheit.
+
+Am 28. Oktober 1886 von Präsident Grover Cleveland eingeweiht, hat die Statue Millionen von Immigranten begrüßt, die in Amerika ankamen. Die Inschrift auf dem Sockel lautet: „Gebt mir eure Müden, eure Armen, eure freiheitsdurstigen Massen, die danach lechzen."`,
+        details: `Design und Ingenieurskunst: Das interne Eisengerüst wurde von niemand anderem als Gustave Eiffel entworfen (der später den Eiffel-Turm entwarf). Das Gerüst besteht aus einer Eisenpylon und sekundärem Skelettgerüst, das den Kupferblättern erlaubt, sich leicht mit Wind und Temperaturänderungen zu bewegen.
+
+Symbolik: Lady Liberty hält eine Fackel in ihrer rechten Hand erhoben, repräsentierend Erleuchtung und Hoffnung. In ihrer linken Hand hält sie eine Tafel mit dem Datum der amerikanischen Unabhängigkeit (4. Juli 1776). Eine zerbrochene Kette liegt zu ihren Füßen, symbolisierend Befreiung von Unterdrückung.
+
+Die Krone: Die Statuen-Krone hat sieben Zacken, traditionell interpretiert als die sieben Kontinente oder sieben Meere. Die Krone enthält 25 Fenster, was Besuchern erlaubt, den Hafen und die Stadt aus dem Monument zu beobachten.
+
+Kupfer-Außenseite: Das charakteristische blaugrüne Patina ist Kupferoxid, das sich über Jahrzehnte bildete, als das Kupfer oxidierte. Das ursprüngliche Kupfer war glänzend rotbraun. Eine bedeutende Restaurierung 1986 ersetzte korrodiertes inneres Eisenwerk.
+
+Sockel und Basis: Die Statue ruht auf einem Granit- und Beton-Sockel. Innerhalb des Sockels ist ein Museum, das die Statuen-Geschichte und das Einwanderungs-Erlebnis dokumentiert.`,
+        quiz: [
+            {
+                question: "In welchem Jahr wurde die Freiheitsstatue eingeweiht?",
+                options: ["1876", "1884", "1886"],
+                correct: 2,
+                hint: "Das Jahr ist in der Übersicht genannt."
+            },
+            {
+                question: "Wer entwarf das interne Eisengerüst?",
+                options: [
+                    "Richard Morris Hunt",
+                    "Gustave Eiffel",
+                    "Thomas Edison"
+                ],
+                correct: 1,
+                hint: "Lies 'Design und Ingenieurskunst'."
+            },
+            {
+                question: "Was symbolisiert die zerbrochene Kette?",
+                options: [
+                    "Amerikas industrielle Kraft",
+                    "Befreiung von Unterdrückung und Sklaverei",
+                    "Die Stärke der Nation"
+                ],
+                correct: 1,
+                hint: "Schau 'Symbolik'."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [40.6892, -74.0445], zoom: 17 }
+        ]
+    },
+
+    {
+        id: "neuschwanstein",
+        type: "heritage",
+        title: "Schloss Neuschwanstein",
+        country: "Deutschland",
+        category: "Schloss",
+        epochDisplay: "19. Jahrhundert",
+        builtYear: 1869,
+        epoch: "modern",
+        unescoYear: null,
+        coordinates: [47.5576, 10.7498],
+        zoom: 15,
+        images: [
+            "https://images.unsplash.com/photo-1520763185298-1b434c919eba?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?auto=format&fit=crop&w=800&q=80"
+        ],
+        overview: `Neuschwanstein ist ein 19.-Jahrhundert-Schloss auf einem rauen Hügel über dem Dorf Hohenschwangau im Südwesten Bayern, Deutschland. König Ludwig II. von Bayern beauftragte das Schloss als private Rückzugsstätte. Mit seinen weißen kalksteinernen Wänden und zahlreichen Türmen wurde es zum berühmtesten deutschen Schloss und inspirierte das Schloss „Sleeping Beauty" in Disneyland.
+
+Das Schloss wurde von 1869 bis 1886 gebaut (Ludwig II. starb bevor es fertiggestellt wurde). Es ist ein Meisterwerk der Romantischen Revival-Architektur und bleibt ein großer Tourismusmagnet.`,
+        details: `Architektur: Neuschwanstein wurde im Stil der Gotischen Revival-Architektur entworfen mit Elementen von bayerischer Bergschloss-Tradition. Das Schloss hat 200 Zimmer, von denen 14 fertiggestellt wurden. Der Thronsaal ist mit aufwendigen Malereien geschmückt, die Wagner-Opern darstellen.
+
+Ludwigs Leidenschaft: Ludwig II. war ein großer Bewunderer Richard Wagners und versagte finanzielle Unterstützung für Wagners Werke. Das Schloss spiegelt sein großzügiges, romantisches und ästhetisches Ideal wider. Viele Zimmer sind Wagner-Opern gewidmet.
+
+Konstruktionschallenges: Der Schloss-Bau war technisch schwierig. Die Lage auf einem steilen Hügel erforderte innovative Ingenieurskunst. Die Konstruktion war teuer und trug zu Ludwigs finanziellen Schwierigkeiten bei.
+
+Turme und Architektur-Details: Das Schloss charakterisiert Türme, Zinnen und Bögen mit detaillierten Schnitzereien. Die äußere Fassade verwendete Kalkstein von lokalen Steinbrüchen. Die inneren Dekoration zeigt bayerische Kunstfertigkeiten.
+
+Moderne Bedeutung: Das Schloss wurde zur Inspiration für weitere Romantische Revival-Architektur über Europa. Es repräsentiert die Höhe der königlichen Fantasien und künstlerischen Ambitionen des 19. Jahrhunderts.`,
+        quiz: [
+            {
+                question: "Wer beauftragte den Bau von Neuschwanstein?",
+                options: ["König Ludwig I.", "König Ludwig II.", "Bismarck"],
+                correct: 1,
+                hint: "Der Name ist in der Übersicht genannt."
+            },
+            {
+                question: "Wie viele Zimmer hat Neuschwanstein?",
+                options: ["100", "150", "200"],
+                correct: 2,
+                hint: "Die Zahl ist in 'Architektur' genannt."
+            },
+            {
+                question: "Welcher Komponist inspirierte Ludwig?",
+                options: ["Beethoven", "Mozart", "Richard Wagner"],
+                correct: 2,
+                hint: "Schau 'Ludwigs Leidenschaft'."
+            }
+        ],
+        tourWaypoints: [
+            { coords: [47.5576, 10.7498], zoom: 16 }
+        ]
     }
 ];
 
-/* EPOCH COLORS */
 const EPOCH_COLORS = { ancient: "#8B0000", medieval: "#8B6914", modern: "#2C5F2E" };
 const TILE_LAYERS = {
     light: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
     dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 };
 
-/* STATE */
 let map, activeTileLayer, currentTheme = "light";
-let userXP = parseInt(localStorage.getItem("chronos_xp_v5")) || 0;
-const MAX_XP = HERITAGE_DATA.length * 3 * 50; // 3 questions × 50 XP each
-let completedQuizzes = JSON.parse(localStorage.getItem("chronos_completed_v5")) || {};
-let favorites = JSON.parse(localStorage.getItem("chronos_favs_v5")) || [];
+let userXP = parseInt(localStorage.getItem("chronos_xp_v4")) || 0;
+const MAX_XP = HERITAGE_DATA.length * 3 * 50;
+let completedQuizzes = JSON.parse(localStorage.getItem("chronos_completed_v4")) || {};
+let favorites = JSON.parse(localStorage.getItem("chronos_favs_v4")) || [];
 let activeSite = null;
 let activeFilter = "all";
 let activeSort = "default";
 let currentView = "explore";
 
-/* INIT */
 document.addEventListener("DOMContentLoaded", () => {
     const bounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
     map = L.map("map", {
@@ -1512,16 +1480,16 @@ function createMarker(site) {
     if (site.type === "wonder") {
         const icon = L.divIcon({
             className: "wonder-marker",
-            html: `<div class="wonder-wrap"><div class="wonder-star">★</div><div class="wonder-ring"></div></div>`,
-            iconSize: [28, 28], iconAnchor: [14, 14]
+            html: `<div class="wonder-wrap"><div class="wonder-star">★</div></div>`,
+            iconSize: [16, 16], iconAnchor: [8, 8]
         });
         return L.marker(site.coordinates, { icon });
     } else {
         const color = EPOCH_COLORS[site.epoch] || "#1B4F8A";
         const icon = L.divIcon({
             className: "custom-marker",
-            html: `<div class="marker-wrap"><div class="marker-core" style="background:${color}"></div><div class="marker-ring" style="background:${color}44"></div></div>`,
-            iconSize: [22, 22], iconAnchor: [11, 11]
+            html: `<div class="marker-wrap"><div class="marker-core" style="background:${color}"></div></div>`,
+            iconSize: [14, 14], iconAnchor: [7, 7]
         });
         return L.marker(site.coordinates, { icon });
     }
@@ -1541,7 +1509,7 @@ function getFilteredSorted() {
 
     if (activeSort === "oldest") data.sort((a, b) => a.builtYear - b.builtYear);
     else if (activeSort === "newest") data.sort((a, b) => b.builtYear - a.builtYear);
-    else if (activeSort === "name") data.sort((a, b) => a.title.localeCompare(b.title));
+    else if (activeSort === "name") data.sort((a, b) => a.title.localeCompare(b.title, "de"));
 
     return data;
 }
@@ -1555,13 +1523,10 @@ function renderList() {
         const item = document.createElement("button");
         item.className = "quick-item";
         const isFav = favorites.includes(site.id);
-        const color = site.type === "wonder" ? "#F97316" : EPOCH_COLORS[site.epoch];
-
-        const yearDisplay = site.builtYear < 0 ? `${Math.abs(site.builtYear)} BCE` : `${site.builtYear} CE`;
-        const icon = site.type === "wonder" ? "★" : "●";
+        const yearDisplay = site.builtYear < 0 ? `${Math.abs(site.builtYear)} v. Chr.` : `${site.builtYear}`;
 
         item.innerHTML = `
-            <div style="font-size: 16px; opacity: 0.6;">${icon}</div>
+            <div style="font-size: 14px; opacity: 0.5;">${site.type === "wonder" ? "★" : "●"}</div>
             <div class="quick-item-body">
                 <div class="quick-item-title">${site.title}</div>
                 <div class="quick-item-meta">${site.country} — ${yearDisplay}</div>
@@ -1582,7 +1547,7 @@ function toggleFav(id) {
     const idx = favorites.indexOf(id);
     if (idx === -1) favorites.push(id);
     else favorites.splice(idx, 1);
-    localStorage.setItem("chronos_favs_v5", JSON.stringify(favorites));
+    localStorage.setItem("chronos_favs_v4", JSON.stringify(favorites));
     document.getElementById("fav-count").textContent = favorites.length;
     renderList();
     renderFavList();
@@ -1596,7 +1561,7 @@ function renderFavList() {
     document.getElementById("fav-count").textContent = favorites.length;
     container.innerHTML = "";
     if (favorites.length === 0) {
-        container.innerHTML = `<div class="empty-fav">No saved sites yet</div>`;
+        container.innerHTML = `<div class="empty-fav">Noch keine Favoriten</div>`;
         return;
     }
     favorites.forEach(id => {
@@ -1605,7 +1570,7 @@ function renderFavList() {
         const item = document.createElement("div");
         item.className = "fav-item";
         item.innerHTML = `
-            <span style="opacity: 0.7; margin-right: 4px;">${site.type === "wonder" ? "★" : "●"}</span>
+            <span style="opacity: 0.6; margin-right: 4px;">${site.type === "wonder" ? "★" : "●"}</span>
             <div style="flex: 1;">
                 <div class="fav-item-title">${site.title}</div>
                 <div class="fav-item-country">${site.country}</div>
@@ -1693,14 +1658,14 @@ function selectSite(site) {
     document.getElementById("site-category").textContent = site.category;
     const typeBadge = document.getElementById("site-type-badge");
     if (site.type === "wonder") {
-        typeBadge.textContent = "Seven Wonder";
+        typeBadge.textContent = "Sieben Wunder";
         typeBadge.style.display = "inline-block";
     } else { typeBadge.style.display = "none"; }
 
     document.getElementById("site-title").textContent = site.title;
     const yearStr = site.builtYear < 0
-        ? `Built ${Math.abs(site.builtYear)} BCE · UNESCO ${site.unescoYear || "–"}`
-        : `Built ${site.builtYear} CE · UNESCO ${site.unescoYear || "–"}`;
+        ? `Erbaut ${Math.abs(site.builtYear)} v. Chr. · UNESCO ${site.unescoYear || "–"}`
+        : `Erbaut ${site.builtYear} · UNESCO ${site.unescoYear || "–"}`;
     document.getElementById("site-meta").textContent = yearStr;
 
     document.getElementById("btn-favorite").textContent = favorites.includes(site.id) ? "★" : "☆";
@@ -1744,15 +1709,14 @@ function buildQuiz(site) {
         card.className = "quiz-card";
         card.innerHTML = `
             <div class="quiz-header">
-                <div class="quiz-title">Question ${qIdx + 1}/3</div>
-                <div class="quiz-counter">${q.correct === null ? "–" : "–"}</div>
+                <div class="quiz-title">Frage ${qIdx + 1}/3</div>
             </div>
             <div class="quiz-question">${q.question}</div>
             <div class="quiz-options" data-qidx="${qIdx}"></div>
             <div class="quiz-hint" data-qidx="${qIdx}"></div>
             <div class="task-success hidden" data-qidx="${qIdx}">
                 <div class="success-icon">✓</div>
-                <span>+50 XP</span>
+                <span>+50 Punkte</span>
             </div>
         `;
         container.appendChild(card);
@@ -1781,8 +1745,8 @@ function handleQuizAnswer(site, qIdx, oIdx, btn, card) {
             userXP += 50;
             if (!completedQuizzes[site.id]) completedQuizzes[site.id] = {};
             completedQuizzes[site.id][qIdx] = true;
-            localStorage.setItem("chronos_xp_v5", userXP);
-            localStorage.setItem("chronos_completed_v5", JSON.stringify(completedQuizzes));
+            localStorage.setItem("chronos_xp_v4", userXP);
+            localStorage.setItem("chronos_completed_v4", JSON.stringify(completedQuizzes));
             updateXPUI();
             card.querySelector(".task-success").classList.remove("hidden");
         }, 500);
@@ -1801,11 +1765,11 @@ function runTour(waypoints) {
     function next() {
         if (step >= waypoints.length) {
             btn.disabled = false;
-            btn.textContent = "View Virtual Tour";
+            btn.textContent = "Virtuelle Tour ansehen";
             if (activeSite) map.flyTo(activeSite.coordinates, activeSite.zoom, { duration: 1.5 });
             return;
         }
-        btn.textContent = `Viewing ${step + 1}/${waypoints.length}...`;
+        btn.textContent = `Anzeige ${step + 1}/${waypoints.length}...`;
         const wp = waypoints[step];
         map.flyTo(wp.coords, wp.zoom, { duration: 2.2 });
         step++;
