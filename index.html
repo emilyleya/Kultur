@@ -10,56 +10,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 /* ============================================================
-   CHRONOS v4 – MODERN GLASSMORPHISM DESIGN
-   Apple-inspired, minimal, 100% serifenlos, German
+   CHRONOS v5 – MODERN EARTHY DESIGN WITH RUST ACCENT
+   Apple-inspired, minimal, earthy palette
    ============================================================ */
 
 :root {
-    --white:           #FFFFFF;
-    --off-white:       #F9FAFB;
-    --gray-50:         #F3F4F6;
-    --gray-100:        #E5E7EB;
-    --gray-200:        #D1D5DB;
-    --gray-300:        #9CA3AF;
-    --gray-600:        #4B5563;
-    --gray-900:        #111827;
+    /* Modern Earthy Palette */
+    --sand:            #FBF8F3;
+    --clay-50:         #F5EFEA;
+    --clay-100:        #EFE5DB;
+    --clay-200:        #E4D7C8;
+    --taupe:           #C5B5A8;
+    --stone:           #8B7B6F;
+    --dark-clay:       #3E3530;
     --black:           #000000;
     
-    --blue:            #0066CC;
-    --blue-light:      #E0EEFF;
-    --blue-dark:       #003399;
-    --red:             #C41E3A;
-    --green:           #34A853;
-    --amber:           #F97316;
+    /* Knalliger Akzent: Vibrant Orange */
+    --accent-primary:  #FF8C42;
+    --accent-light:    #FFE8D6;
+    --accent-dark:     #E67A2D;
     
-    --bg:              var(--white);
-    --surface:         rgba(255, 255, 255, 0.7);
-    --surface-dark:    rgba(0, 0, 0, 0.05);
-    --border:          rgba(0, 0, 0, 0.08);
-    --text:            var(--gray-900);
-    --text-secondary:  var(--gray-600);
-    --text-tertiary:   var(--gray-300);
-    --shadow:          0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.12);
+    --success:         #6B9F7F;
     
-    --accent:          var(--blue);
-    --accent-light:    var(--blue-light);
+    --bg:              var(--sand);
+    --surface:         rgba(251, 248, 243, 0.72);
+    --surface-dark:    rgba(139, 123, 111, 0.05);
+    --border:          rgba(139, 123, 111, 0.11);
+    --text:            var(--dark-clay);
+    --text-secondary:  var(--stone);
+    --text-tertiary:   var(--taupe);
+    --shadow:          0 4px 16px rgba(0, 0, 0, 0.04);
+    --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.08);
     
+    --accent:          var(--accent-primary);
     --glass-blur:      backdrop-filter: blur(12px) saturate(180%);
-    --glass-border:    border: 1px solid rgba(255, 255, 255, 0.25);
+    --glass-border:    border: 1px solid rgba(139, 123, 111, 0.12);
 }
 
 body.dark-theme {
-    --bg:              #111111;
-    --surface:         rgba(255, 255, 255, 0.08);
-    --surface-dark:    rgba(0, 0, 0, 0.4);
-    --border:          rgba(255, 255, 255, 0.12);
-    --text:            #FFFFFF;
-    --text-secondary:  #E0E0E0;
-    --text-tertiary:   #A0A0A0;
+    --bg:              #1A1510;
+    --surface:         rgba(251, 248, 243, 0.065);
+    --surface-dark:    rgba(255, 140, 66, 0.06);
+    --border:          rgba(239, 229, 219, 0.08);
+    --text:            #F5EFEA;
+    --text-secondary:  #D8CCBE;
+    --text-tertiary:   #A89A8E;
     --shadow:          0 4px 16px rgba(0, 0, 0, 0.3);
     --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.5);
-    --accent-light:    rgba(0, 102, 204, 0.15);
+    --accent-light:    rgba(255, 140, 66, 0.14);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -160,7 +158,7 @@ h2 {
 
 .legend-dot {
     width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-    border: 2px solid var(--white);
+    border: 2px solid var(--cream);
 }
 
 .filter-group { margin-bottom: 18px; }
@@ -235,7 +233,6 @@ h2 {
     width: 100%; background: var(--surface-dark); border: 1px solid var(--border);
     border-radius: 11px; padding: 12px 14px; cursor: pointer; text-align: left;
     transition: all 0.2s; display: flex; align-items: center; gap: 12px;
-    position: relative;
 }
 
 .quick-item:hover {
@@ -255,10 +252,9 @@ h2 {
 
 .quick-item-fav {
     font-size: 16px; cursor: pointer; padding: 4px; flex-shrink: 0;
-    transition: transform 0.2s;
 }
 
-.quick-item-fav:hover { transform: scale(1.2); }
+.quick-item-fav:hover { opacity: 0.7; }
 
 .favorites-section { margin-top: 20px; }
 .fav-header {
@@ -271,13 +267,13 @@ h2 {
 }
 
 .fav-item {
-    background: rgba(52, 168, 83, 0.08); border: 1px solid rgba(52, 168, 83, 0.2);
+    background: rgba(90, 140, 111, 0.08); border: 1px solid rgba(90, 140, 111, 0.2);
     border-radius: 10px; padding: 11px 13px; cursor: pointer;
     display: flex; align-items: center; gap: 10px; transition: all 0.2s;
 }
 
 .fav-item:hover {
-    background: rgba(52, 168, 83, 0.12);
+    background: rgba(90, 140, 111, 0.12);
 }
 
 .fav-item-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
@@ -342,12 +338,12 @@ h2 {
 
 .gallery-main {
     width: 100%; height: 200px; overflow: hidden; position: relative;
-    background: var(--gray-900);
+    background: var(--dark-brown);
 }
 
 .gallery-main img {
     width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.4s ease; display: block;
+    display: block;
 }
 
 .gallery-thumbs {
@@ -430,10 +426,6 @@ h2 {
     text-transform: uppercase; letter-spacing: 0.5px;
 }
 
-.quiz-counter {
-    font-size: 11px; color: var(--text-secondary);
-}
-
 .quiz-question {
     font-size: 14px; color: var(--text); font-weight: 600;
     margin-bottom: 12px; line-height: 1.5;
@@ -455,35 +447,35 @@ h2 {
 }
 
 .quiz-option.correct {
-    background: rgba(52, 168, 83, 0.15) !important;
-    border-color: var(--green) !important;
-    color: var(--green) !important;
+    background: rgba(90, 140, 111, 0.15) !important;
+    border-color: var(--green-accent) !important;
+    color: var(--green-accent) !important;
     font-weight: 600;
 }
 
 .quiz-option.wrong {
-    background: rgba(196, 30, 58, 0.1) !important;
-    border-color: var(--red) !important;
-    color: var(--red) !important;
+    background: rgba(217, 118, 67, 0.1) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
 }
 
 .quiz-hint {
     margin-top: 10px; padding: 10px 12px;
-    background: rgba(249, 115, 22, 0.1);
-    border-left: 2px solid var(--amber);
-    color: var(--amber); font-size: 12px;
+    background: rgba(217, 118, 67, 0.08);
+    border-left: 2px solid var(--accent);
+    color: var(--accent); font-size: 12px;
     border-radius: 0 6px 6px 0; display: none;
 }
 
 .task-success {
-    position: absolute; inset: 0; background: rgba(255, 255, 255, 0.95);
-    color: var(--green); display: flex;
+    position: absolute; inset: 0; background: rgba(250, 247, 242, 0.95);
+    color: var(--green-accent); display: flex;
     align-items: center; justify-content: center; font-weight: 700;
     font-size: 15px; border-radius: 14px; flex-direction: column; gap: 8px;
 }
 
 body.dark-theme .task-success {
-    background: rgba(20, 20, 20, 0.95);
+    background: rgba(22, 18, 13, 0.95);
 }
 
 .task-success.hidden { display: none; }
@@ -496,12 +488,12 @@ body.dark-theme .task-success {
     width: 100%; background: var(--accent); color: white; border: none;
     padding: 12px 18px; font-size: 14px; font-weight: 600; border-radius: 10px;
     cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+    box-shadow: 0 2px 8px rgba(217, 118, 67, 0.2);
 }
 
 .primary-btn:hover {
-    background: var(--blue-dark);
-    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.3);
+    background: var(--accent-dark);
+    box-shadow: 0 4px 16px rgba(217, 118, 67, 0.3);
 }
 
 .primary-btn:active { transform: translateY(1px); }
@@ -542,7 +534,7 @@ body.dark-theme .task-success {
 .wonder-wrap { position: relative; width: 16px; height: 16px; }
 .wonder-star {
     font-size: 14px; position: absolute; top: 1px; left: 1px;
-    filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.6));
+    filter: drop-shadow(0 0 2px rgba(217, 118, 67, 0.6));
     z-index: 2;
 }
 
@@ -1146,7 +1138,6 @@ Astronomische Präzision: Mehrere Strukturen zeigen sophistische astronomische K
         ]
     },
 
-    // UNESCO-ONLY SITES
     {
         id: "angkor-wat",
         type: "heritage",
@@ -1165,16 +1156,14 @@ Astronomische Präzision: Mehrere Strukturen zeigen sophistische astronomische K
         ],
         overview: `Angkor Wat ist das größte Religionsmonument der Welt, ursprünglich als Hindu-Tempel dem Gott Vishnu gewidmet im frühen 12. Jahrhundert unter Khmer-König Suryavarman II. Mit 1.626 Quadratkilometern repräsentiert der Tempelkomplex den Höhepunkt der Khmer-Architektur und künstlerischen Leistung.
 
-Im Laufe der Zeit wechselte Angkor Wat vom Hindu- zum Buddhismus-Ritual, und heute bleibt es Kambodschas wichtigster Kultursymbol und eine ikonische Darstellung des südostasiatischen Erbes. Der Tempel wurde ohne Mörtel aus präzise angepassten Sandsteinblöcken erbaut.`,
+Im Laufe der Zeit wechselte Angkor Wat vom Hindu- zum Buddhismus-Ritual, und heute bleibt es Kambodschas wichtigster Kultursymbol und eine ikonische Darstellung des südostasiatischen Erbes.`,
         details: `Architektonisches Layout: Angkor Wat wurde als Mikrokosmos des Hindu-Universums konzipiert, mit der zentralen Gruppe von Türmen, die den Berg Meru (Mittelpunkt des Universums) repräsentiert. Der Tempel ist von einem Wassergraben umgeben, mit Zugängen an Kardinalrichtungen.
 
 Bauskala: Der Tempel benötigte schätzungsweise 300.000 Arbeiter über 30 Jahre. Die Präzision der Konstruktion ist bemerkenswert – Steinblöcke passen so eng zusammen, dass Mörtel unnötig war.
 
-Bas-Reliefs: Die Wände der unteren Galerien sind mit über 1.200 Quadratmetern von aufwendig geschnitzten Bas-Reliefs bedeckt, die Szenen aus Hindu-Epen darstellen und die Khmer-Zivilisation glorifizieren.
+Bas-Reliefs: Die Wände der unteren Galerien sind mit über 1.200 Quadratmetern von aufwendig geschnitzten Bas-Reliefs bedeckt, die Szenen aus Hindu-Epen darstellen.
 
-Künstlerische Innovationen: Angkor Wat exemplifiziert Khmer klassischen Stil mit ausgedehnter Ornamentik. Die Apsara (himmlische Tänzerinnen)-Schnitzereien sind für graziöse Posen bekannt. Über 2.000 Apsara-Figuren sind durchgehend geschnitzt.
-
-Hydraulische Ingenieurskunst: Der erweiterte Angkor-Komplex bot fortgeschrittenes Wassermanagementsystem mit Reservoiren und Kanälen, das Agrarproduktion unterstützte und eine Bevölkerung von fast einer Million Menschen trug.`,
+Künstlerische Innovationen: Angkor Wat exemplifiziert Khmer klassischen Stil. Die Apsara (himmlische Tänzerinnen)-Schnitzereien sind bekannt. Über 2.000 Apsara-Figuren sind durchgehend geschnitzt.`,
         quiz: [
             {
                 question: "Welchem Hindu-Gott war Angkor Wat ursprünglich gewidmet?",
@@ -1189,7 +1178,7 @@ Hydraulische Ingenieurskunst: Der erweiterte Angkor-Komplex bot fortgeschrittene
                 hint: "Schau 'Künstlerische Innovationen'."
             },
             {
-                question: "Was repräsentiert der zentrale Turm im Design?",
+                question: "Was repräsentiert der zentrale Turm?",
                 options: [
                     "Eine Festung",
                     "Berg Meru (Mittelpunkt des Universums)",
@@ -1221,18 +1210,16 @@ Hydraulische Ingenieurskunst: Der erweiterte Angkor-Komplex bot fortgeschrittene
             "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1583400470628-3abb0a4c5194?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Kyoto war über 1.000 Jahre die Hauptstadt Japans, von 794 bis 1868, als der Kaiserliche Hof nach Tokio zog. Die Stadt beherbergt 17 UNESCO-Welterbe-Tempel und Schreine, die den Höhepunkt der japanischen Architektur, Gartengestaltung und künstlerischen Tradition repräsentieren.
+        overview: `Kyoto war über 1.000 Jahre die Hauptstadt Japans, von 794 bis 1868. Die Stadt beherbergt 17 UNESCO-Welterbe-Tempel und Schreine, die den Höhepunkt der japanischen Architektur, Gartengestaltung und künstlerischen Tradition repräsentieren.
 
-Die historische Stadt erhält unzählige traditionelle hölzerne Machiya-Häuser, makellose Gärten und antike Tempel, die gemeinsam die ästhetischen und geistigen Werte der japanischen Kultur über mehrere historische Perioden verkörpern.`,
-        details: `Architektonisches Erbe: Kyotos Tempel zeigen unterschiedliche Stile verschiedener historischer Perioden. Kiyomizu-dera (gegründet 778) zeigt traditionelle Edo-Periode-Architektur. Fushimi Inari Taisha ist berühmt für Tausende von Vermillion-Torii-Toren. Der Goldene Pavillon und Silberne Pavillon exemplifizieren Zen-Ästhetik.
+Die historische Stadt erhält unzählige traditionelle hölzerne Machiya-Häuser, makellose Gärten und antike Tempel.`,
+        details: `Architektonisches Erbe: Kyotos Tempel zeigen unterschiedliche Stile verschiedener historischer Perioden. Kiyomizu-dera (gegründet 778) zeigt traditionelle Edo-Periode-Architektur. Der Goldene Pavillon und Silberne Pavillon exemplifizieren Zen-Ästhetik.
 
-Nachtigallböden: Das Nijo-Schloss zeigt eine raffinierte architektonische Innovation: Nachtigallböden. Diese Holzböden sind speziell gebaut, um charakteristische hohe Geräusche zu produzieren – eine unbeabsichtigte aber hocheffektive Burgalarmanlage.
+Nachtigallböden: Das Nijo-Schloss zeigt eine raffinierte architektonische Innovation: Nachtigallböden. Diese Holzböden sind speziell gebaut, um charakteristische hohe Geräusche zu produzieren – eine effektive Burgalarmanlage.
 
-Gartengestaltung: Kyotos Gärten repräsentieren angesammeltes Gartenwissen. Trockene Felsgärten (Karesansui) nutzen Felsen, Sand und beschnittene Vegetation, um Landschaftselemente zu suggerieren.
+Gartengestaltung: Kyotos Gärten repräsentieren angesammeltes Gartenwissen. Trockene Felsgärten (Karesansui) nutzen Felsen, Sand und beschnittene Vegetation.
 
-Traditionelle Künste: Kyoto bleibt Zentrum traditioneller japanischer Künste, einschließlich Kabuki-Theater und Geisha-Kultur. Der Gion-Distrikt erhält ein historisches Geisha-Viertel. Mehrere Kabuki-Theater führen klassische Stücke auf.
-
-Festival-Traditionen: Kyoto hostet zahlreiche traditionelle Feste. Das Gion Matsuri im Juli ist eines der berühmtesten Japans mit Prozessionen von aufwendigen Floats.`,
+Traditionelle Künste: Kyoto bleibt Zentrum traditioneller japanischer Künste. Der Gion-Distrikt erhält ein historisches Geisha-Viertel.`,
         quiz: [
             {
                 question: "Wie lange war Kyoto Hauptstadt Japans?",
@@ -1279,26 +1266,20 @@ Festival-Traditionen: Kyoto hostet zahlreiche traditionelle Feste. Das Gion Mats
             "https://images.unsplash.com/photo-1548013146-b6a63d6ffd1c?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1600585152915-d3400ca199a8?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Die Alhambra ist ein befestigter Palastkomplex in Granada, Spanien, erbaut während der islamischen Nasriden-Dynastie im 13.–14. Jahrhundert. Der Name stammt vom arabischen „al-qal'ah al-hamra", bedeutet „die rote Festung", bezogen auf die roten Lehmziegel.
+        overview: `Die Alhambra ist ein befestigter Palastkomplex in Granada, Spanien, erbaut während der islamischen Nasriden-Dynastie im 13.–14. Jahrhundert. Der Name stammt vom arabischen „al-qal'ah al-hamra", bedeutet „die rote Festung".
 
-Dieses Meisterwerk islamischer Architektur repräsentiert den Höhepunkt der andalusischen islamischen Kunst und Kultur. Der Komplex besteht aus Königlichen Palästen, Verwaltungsgebäuden, Moscheen, Bädern, Wohnquartieren und Befestigungsmauern.`,
-        details: `Architektonische Sektionen: Die Alcazaba ist der älteste Abschnitt, eine Festung mit Türmen und Mauern. Die Nasriden-Paläste enthalten die intimsten und künstlerisch verfeinertsten Räume, einschließlich des Löwenplatzes und des Myrten-Platzes. Die Generalife ist ein separates Lustschloss mit ausgedehnten Gärten.
+Dieses Meisterwerk islamischer Architektur repräsentiert den Höhepunkt der andalusischen islamischen Kunst und Kultur.`,
+        details: `Architektonische Sektionen: Die Alcazaba ist der älteste Abschnitt, eine Festung mit Türmen und Mauern. Die Nasriden-Paläste enthalten die intimsten Räume, einschließlich des Löwenplatzes und des Myrten-Platzes. Die Generalife ist ein separates Lustschloss mit ausgedehnten Gärten.
 
-Dekorative Elemente: Die Alhambra zeigt außergewöhnliche Dekoration mit aufwendig geschnitztem Stuck, glasierter Keramik und aufwendigen Holzdecken-Feldern. Wände zeigen wiederholte geometrische und kalligrafische Muster, einschließlich ausgedehnter arabischer Inschriften.
+Dekorative Elemente: Die Alhambra zeigt außergewöhnliche Dekoration mit aufwendig geschnitztem Stuck, glasierter Keramik und aufwendigen Holzdecken-Feldern.
 
-Wasserflächen: Wasser ist durchgängig integriert als funktionales und ästhetisches Element. Der Löwenplatz hat einen zentralen Brunnen mit 12 Marmor-Löwenskulpturen.
+Wasserflächen: Wasser ist durchgängig integriert. Der Löwenplatz hat einen zentralen Brunnen mit 12 Marmor-Löwenskulpturen.
 
-Der Löwenhof: Dieser ikonische Raum ist von 124 zarten Marmorsäulen umgeben. Der zentrale Brunnen ruht auf einem Marmorbecken von 12 Löwenskulpturen gestützt. Bögen zeigen aufwendige Muqarnas (Wabenmuster)-Wölbung.
-
-Erhaltungschallengen: Die Alhambra litten unter Vernachlässigung im 19. Jahrhundert. Restaurierungen seit dem späten 19. Jahrhundert haben die originalen dekorativen Schemata vorsichtig bewahrt.`,
+Der Löwenhof: Dieser ikonische Raum ist von 124 zarten Marmorsäulen umgeben. Bögen zeigen aufwendige Muqarnas (Wabenmuster)-Wölbung.`,
         quiz: [
             {
                 question: "Was bedeutet 'Alhambra' auf Arabisch?",
-                options: [
-                    "Palast des Sultans",
-                    "Die rote Festung",
-                    "Hof der Löwen"
-                ],
+                options: ["Palast des Sultans", "Die rote Festung", "Hof der Löwen"],
                 correct: 1,
                 hint: "Die Bedeutung wird in der Übersicht erklärt."
             },
@@ -1341,18 +1322,16 @@ Erhaltungschallengen: Die Alhambra litten unter Vernachlässigung im 19. Jahrhun
             "https://images.unsplash.com/photo-1495955484749-352ce9b7a72a?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1485872999829-c673f5194813?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Die Freiheitsstatue war ein Geschenk von Frankreich an die Vereinigten Staaten und wurde 1886 als Symbol der Freiheit und Demokratie eingeweiht. Entworfen vom französischen Bildhauer Frédéric Auguste Bartholdi, steht die 93-Meter-hohe Kupfer-Statue auf Liberty Island in New York Harbor und ist eines der Welt-Symbole der Freiheit.
+        overview: `Die Freiheitsstatue war ein Geschenk von Frankreich an die Vereinigten Staaten und wurde 1886 als Symbol der Freiheit und Demokratie eingeweiht. Entworfen vom französischen Bildhauer Frédéric Auguste Bartholdi, steht die 93-Meter-hohe Kupfer-Statue auf Liberty Island und ist eines der Welt-Symbole der Freiheit.
 
-Am 28. Oktober 1886 von Präsident Grover Cleveland eingeweiht, hat die Statue Millionen von Immigranten begrüßt, die in Amerika ankamen. Die Inschrift auf dem Sockel lautet: „Gebt mir eure Müden, eure Armen, eure freiheitsdurstigen Massen, die danach lechzen."`,
-        details: `Design und Ingenieurskunst: Das interne Eisengerüst wurde von niemand anderem als Gustave Eiffel entworfen (der später den Eiffel-Turm entwarf). Das Gerüst besteht aus einer Eisenpylon und sekundärem Skelettgerüst, das den Kupferblättern erlaubt, sich leicht mit Wind und Temperaturänderungen zu bewegen.
+Am 28. Oktober 1886 eingeweiht, hat die Statue Millionen von Immigranten begrüßt.`,
+        details: `Design und Ingenieurskunst: Das interne Eisengerüst wurde von Gustave Eiffel entworfen. Das Gerüst besteht aus einer Eisenpylon, die den Kupferblättern erlaubt, sich leicht mit Wind zu bewegen.
 
-Symbolik: Lady Liberty hält eine Fackel in ihrer rechten Hand erhoben, repräsentierend Erleuchtung und Hoffnung. In ihrer linken Hand hält sie eine Tafel mit dem Datum der amerikanischen Unabhängigkeit (4. Juli 1776). Eine zerbrochene Kette liegt zu ihren Füßen, symbolisierend Befreiung von Unterdrückung.
+Symbolik: Lady Liberty hält eine Fackel in ihrer rechten Hand erhoben, repräsentierend Erleuchtung und Hoffnung. In ihrer linken Hand hält sie eine Tafel mit dem Datum der amerikanischen Unabhängigkeit (4. Juli 1776). Eine zerbrochene Kette liegt zu ihren Füßen.
 
-Die Krone: Die Statuen-Krone hat sieben Zacken, traditionell interpretiert als die sieben Kontinente oder sieben Meere. Die Krone enthält 25 Fenster, was Besuchern erlaubt, den Hafen und die Stadt aus dem Monument zu beobachten.
+Die Krone: Die Statuen-Krone hat sieben Zacken. Die Krone enthält 25 Fenster für Beobachtungen.
 
-Kupfer-Außenseite: Das charakteristische blaugrüne Patina ist Kupferoxid, das sich über Jahrzehnte bildete, als das Kupfer oxidierte. Das ursprüngliche Kupfer war glänzend rotbraun. Eine bedeutende Restaurierung 1986 ersetzte korrodiertes inneres Eisenwerk.
-
-Sockel und Basis: Die Statue ruht auf einem Granit- und Beton-Sockel. Innerhalb des Sockels ist ein Museum, das die Statuen-Geschichte und das Einwanderungs-Erlebnis dokumentiert.`,
+Kupfer-Außenseite: Das charakteristische blaugrüne Patina ist Kupferoxid. Das ursprüngliche Kupfer war glänzend rotbraun.`,
         quiz: [
             {
                 question: "In welchem Jahr wurde die Freiheitsstatue eingeweiht?",
@@ -1362,11 +1341,7 @@ Sockel und Basis: Die Statue ruht auf einem Granit- und Beton-Sockel. Innerhalb 
             },
             {
                 question: "Wer entwarf das interne Eisengerüst?",
-                options: [
-                    "Richard Morris Hunt",
-                    "Gustave Eiffel",
-                    "Thomas Edison"
-                ],
+                options: ["Richard Morris Hunt", "Gustave Eiffel", "Thomas Edison"],
                 correct: 1,
                 hint: "Lies 'Design und Ingenieurskunst'."
             },
@@ -1402,18 +1377,16 @@ Sockel und Basis: Die Statue ruht auf einem Granit- und Beton-Sockel. Innerhalb 
             "https://images.unsplash.com/photo-1520763185298-1b434c919eba?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?auto=format&fit=crop&w=800&q=80"
         ],
-        overview: `Neuschwanstein ist ein 19.-Jahrhundert-Schloss auf einem rauen Hügel über dem Dorf Hohenschwangau im Südwesten Bayern, Deutschland. König Ludwig II. von Bayern beauftragte das Schloss als private Rückzugsstätte. Mit seinen weißen kalksteinernen Wänden und zahlreichen Türmen wurde es zum berühmtesten deutschen Schloss und inspirierte das Schloss „Sleeping Beauty" in Disneyland.
+        overview: `Neuschwanstein ist ein 19.-Jahrhundert-Schloss auf einem rauen Hügel über dem Dorf Hohenschwangau im Südwesten Bayern. König Ludwig II. von Bayern beauftragte das Schloss als private Rückzugsstätte. Mit seinen weißen kalksteinernen Wänden wurde es zum berühmtesten deutschen Schloss.
 
-Das Schloss wurde von 1869 bis 1886 gebaut (Ludwig II. starb bevor es fertiggestellt wurde). Es ist ein Meisterwerk der Romantischen Revival-Architektur und bleibt ein großer Tourismusmagnet.`,
-        details: `Architektur: Neuschwanstein wurde im Stil der Gotischen Revival-Architektur entworfen mit Elementen von bayerischer Bergschloss-Tradition. Das Schloss hat 200 Zimmer, von denen 14 fertiggestellt wurden. Der Thronsaal ist mit aufwendigen Malereien geschmückt, die Wagner-Opern darstellen.
+Das Schloss wurde von 1869 bis 1886 gebaut. Es ist ein Meisterwerk der Romantischen Revival-Architektur.`,
+        details: `Architektur: Neuschwanstein wurde im Stil der Gotischen Revival-Architektur entworfen. Das Schloss hat 200 Zimmer, von denen 14 fertiggestellt wurden. Der Thronsaal ist mit aufwendigen Malereien geschmückt, die Wagner-Opern darstellen.
 
-Ludwigs Leidenschaft: Ludwig II. war ein großer Bewunderer Richard Wagners und versagte finanzielle Unterstützung für Wagners Werke. Das Schloss spiegelt sein großzügiges, romantisches und ästhetisches Ideal wider. Viele Zimmer sind Wagner-Opern gewidmet.
+Ludwigs Leidenschaft: Ludwig II. war ein großer Bewunderer Richard Wagners und versagte finanzielle Unterstützung für Wagners Werke. Das Schloss spiegelt sein großzügiges, romantisches Ideal wider.
 
-Konstruktionschallenges: Der Schloss-Bau war technisch schwierig. Die Lage auf einem steilen Hügel erforderte innovative Ingenieurskunst. Die Konstruktion war teuer und trug zu Ludwigs finanziellen Schwierigkeiten bei.
+Konstruktionschallenges: Der Schloss-Bau war technisch schwierig. Die Lage auf einem steilen Hügel erforderte innovative Ingenieurskunst.
 
-Turme und Architektur-Details: Das Schloss charakterisiert Türme, Zinnen und Bögen mit detaillierten Schnitzereien. Die äußere Fassade verwendete Kalkstein von lokalen Steinbrüchen. Die inneren Dekoration zeigt bayerische Kunstfertigkeiten.
-
-Moderne Bedeutung: Das Schloss wurde zur Inspiration für weitere Romantische Revival-Architektur über Europa. Es repräsentiert die Höhe der königlichen Fantasien und künstlerischen Ambitionen des 19. Jahrhunderts.`,
+Turme und Details: Das Schloss charakterisiert Türme, Zinnen und Bögen mit detaillierten Schnitzereien. Die äußere Fassade verwendete Kalkstein von lokalen Steinbrüchen.`,
         quiz: [
             {
                 question: "Wer beauftragte den Bau von Neuschwanstein?",
@@ -1447,10 +1420,10 @@ const TILE_LAYERS = {
 };
 
 let map, activeTileLayer, currentTheme = "light";
-let userXP = parseInt(localStorage.getItem("chronos_xp_v4")) || 0;
+let userXP = parseInt(localStorage.getItem("chronos_xp_v5")) || 0;
 const MAX_XP = HERITAGE_DATA.length * 3 * 50;
-let completedQuizzes = JSON.parse(localStorage.getItem("chronos_completed_v4")) || {};
-let favorites = JSON.parse(localStorage.getItem("chronos_favs_v4")) || [];
+let completedQuizzes = JSON.parse(localStorage.getItem("chronos_completed_v5")) || {};
+let favorites = JSON.parse(localStorage.getItem("chronos_favs_v5")) || [];
 let activeSite = null;
 let activeFilter = "all";
 let activeSort = "default";
@@ -1547,7 +1520,7 @@ function toggleFav(id) {
     const idx = favorites.indexOf(id);
     if (idx === -1) favorites.push(id);
     else favorites.splice(idx, 1);
-    localStorage.setItem("chronos_favs_v4", JSON.stringify(favorites));
+    localStorage.setItem("chronos_favs_v5", JSON.stringify(favorites));
     document.getElementById("fav-count").textContent = favorites.length;
     renderList();
     renderFavList();
@@ -1745,8 +1718,8 @@ function handleQuizAnswer(site, qIdx, oIdx, btn, card) {
             userXP += 50;
             if (!completedQuizzes[site.id]) completedQuizzes[site.id] = {};
             completedQuizzes[site.id][qIdx] = true;
-            localStorage.setItem("chronos_xp_v4", userXP);
-            localStorage.setItem("chronos_completed_v4", JSON.stringify(completedQuizzes));
+            localStorage.setItem("chronos_xp_v5", userXP);
+            localStorage.setItem("chronos_completed_v5", JSON.stringify(completedQuizzes));
             updateXPUI();
             card.querySelector(".task-success").classList.remove("hidden");
         }, 500);
